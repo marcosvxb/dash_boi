@@ -99,10 +99,52 @@ function renderWeather(weather) {
   $("#weather-label").textContent = weatherCodes(weather.code);
 }
 
+const bgiNumber = id => Number(document.querySelector(id).value) || 0;
+const money = value => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+function calculateBgi() {
+  const spot = bgiNumber("#spot-input"), future = bgiNumber("#future-input"), previous = bgiNumber("#previous-input");
+  const heads = bgiNumber("#heads-input"), arrobas = bgiNumber("#arrobas-input"), cost = bgiNumber("#cost-input");
+  const putStrike = bgiNumber("#put-strike"), putPremium = bgiNumber("#put-premium");
+  const callStrike = bgiNumber("#call-strike"), callPremium = bgiNumber("#call-premium");
+  const totalArrobas = heads * arrobas;
+  const contracts = Math.max(0, Math.round(totalArrobas / 330));
+  const change = previous ? ((future / previous) - 1) * 100 : 0;
+  const basis = spot - future;
+  const hedgeMargin = future - cost;
+  const putFloor = putStrike - putPremium;
+  const collarCost = putPremium - callPremium;
+  const collarFloor = putStrike - collarCost;
+  const collarCap = callStrike - collarCost;
+  const strength = Math.max(5, Math.min(95, 50 + change * 12 + (future > spot ? 8 : -8)));
+  document.querySelector("#bgi-current-label").textContent = `${money(future)}/@`;
+  const changeEl = document.querySelector("#bgi-change");
+  changeEl.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2).replace(".", ",")}%`;
+  changeEl.className = change > .25 ? "positive" : change < -.25 ? "negative" : "neutral";
+  document.querySelector("#bgi-meter").style.left = `${strength}%`;
+  const trend = change > .75 ? "Tendência altista" : change < -.75 ? "Tendência baixista" : "Tendência lateral";
+  document.querySelector("#bgi-trend").textContent = trend;
+  document.querySelector("#bgi-trend-text").textContent = `Variação de ${change.toFixed(2).replace(".", ",")}% contra o ajuste anterior; base informada em ${money(basis)}/@.`;
+  document.querySelector("#hedge-title").textContent = `Vender ${contracts} contrato${contracts === 1 ? "" : "s"} BGI`;
+  document.querySelector("#hedge-copy").textContent = `Cobertura aproximada de ${(contracts * 330).toLocaleString("pt-BR")} das ${totalArrobas.toLocaleString("pt-BR")} arrobas previstas. Sujeita a risco de base e ajustes diários.`;
+  document.querySelector("#hedge-margin").textContent = `${money(hedgeMargin)}/@`;
+  document.querySelector("#put-floor").textContent = `${money(putFloor)}/@`;
+  document.querySelector("#collar-range").textContent = `${money(collarFloor)}–${money(collarCap)}`;
+  const saved = { spot, future, previous, heads, arrobas, cost, putStrike, putPremium, callStrike, callPremium };
+  localStorage.setItem("dashboi-bgi", JSON.stringify(saved));
+}
+
+function restoreBgi() {
+  const saved = JSON.parse(localStorage.getItem("dashboi-bgi") || "null");
+  if (!saved) return;
+  const ids = {spot:"#spot-input",future:"#future-input",previous:"#previous-input",heads:"#heads-input",arrobas:"#arrobas-input",cost:"#cost-input",putStrike:"#put-strike",putPremium:"#put-premium",callStrike:"#call-strike",callPremium:"#call-premium"};
+  Object.entries(ids).forEach(([key,id]) => { if (saved[key] != null) document.querySelector(id).value = saved[key]; });
+}
+
 function init() {
   $("#today").textContent = formatDate(new Date()).replace(/^./,c=>c.toUpperCase()) + " · Visão executiva do mercado";
   $("#gauge").style.setProperty("--score",state.index); $("#gauge strong").textContent=state.index;
-  renderKpis(); renderDrivers(); renderBars(); drawChart(); Promise.allSettled([loadDollar(), loadWeather()]);
+  renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadDollar(), loadWeather()]);
   $("#updated-at").textContent=`Atualizado às ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
@@ -112,6 +154,7 @@ $("#menu-btn").addEventListener("click",()=>$("#sidebar").classList.toggle("open
 document.querySelectorAll(".nav-link").forEach(link=>link.addEventListener("click",()=>{$("#sidebar").classList.remove("open");document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));link.classList.add("active");}));
 $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal());
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
+$("#bgi-calc").addEventListener("click", calculateBgi);
 window.addEventListener("resize",()=>drawChart(Number(document.querySelector(".range-tabs .active").dataset.range)));
 if(localStorage.getItem("dashboi-theme")==="light")document.body.classList.add("light");
 let installPrompt;

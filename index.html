@@ -22,6 +22,7 @@
       <nav aria-label="Navegação principal">
         <a class="nav-link active" href="#inicio"><span>◫</span>Visão geral</a>
         <a class="nav-link" href="#mercado"><span>↗</span>Mercado</a>
+        <a class="nav-link" href="#bgi"><span>⌁</span>B3 · BGI</a>
         <a class="nav-link" href="#exportacoes"><span>◎</span>Exportações</a>
         <a class="nav-link" href="#custos"><span>◇</span>Alimentação</a>
         <a class="nav-link" href="#clima"><span>☼</span>Clima</a>
@@ -106,6 +107,37 @@
           <div class="temp"><strong id="weather-temp">27°</strong><span id="weather-label">Carregando clima...</span></div>
           <div class="weather-stats"><span><small>Chuva prevista 7 dias</small><strong id="weather-rain">18 mm</strong></span><span><small>Umidade</small><strong id="weather-humidity">64%</strong></span></div>
         </article>
+      </section>
+
+      <section class="bgi-section" id="bgi">
+        <div class="section-head"><div><p class="eyebrow">GESTÃO DE RISCO · B3</p><h2>Futuro de Boi Gordo — BGI</h2></div><span class="feed-status"><span class="feed-dot"></span>Feed B3 pendente</span></div>
+        <div class="bgi-grid">
+          <article class="panel bgi-market">
+            <div class="panel-head"><div><p class="eyebrow">CURVA E TENDÊNCIA</p><h2 id="bgi-contract">BGI — vencimento selecionado</h2></div><span class="badge amber">Simulação</span></div>
+            <div class="bgi-quote"><div><small>Futuro atual</small><strong id="bgi-current-label">R$ 324,80</strong></div><div><small>Variação</small><strong id="bgi-change" class="positive">+1,18%</strong></div></div>
+            <div class="trend-meter"><span id="bgi-meter"></span></div>
+            <div class="trend-copy"><strong id="bgi-trend">Tendência altista moderada</strong><p id="bgi-trend-text">O futuro está acima do ajuste anterior e do preço físico informado.</p></div>
+            <p class="source-warning">Preço demonstrativo. Para tendência real intradiária, conecte um distribuidor autorizado de Market Data B3 ou sua corretora.</p>
+          </article>
+          <article class="panel hedge-form">
+            <div class="panel-head"><div><p class="eyebrow">PREMISSAS</p><h2>Simulador de proteção</h2></div><span class="info">i</span></div>
+            <div class="input-grid">
+              <label>Preço físico R$/@<input id="spot-input" type="number" step="0.01" value="318.50"></label>
+              <label>BGI atual R$/@<input id="future-input" type="number" step="0.01" value="324.80"></label>
+              <label>Ajuste anterior R$/@<input id="previous-input" type="number" step="0.01" value="321.00"></label>
+              <label>Cabeças previstas<input id="heads-input" type="number" step="1" value="660"></label>
+              <label>Arrobas por cabeça<input id="arrobas-input" type="number" step="0.1" value="20"></label>
+              <label>Custo-alvo R$/@<input id="cost-input" type="number" step="0.01" value="292.00"></label>
+            </div>
+            <button class="calc-btn" id="bgi-calc">Recalcular cenários</button>
+          </article>
+        </div>
+        <div class="strategy-grid">
+          <article class="strategy-card"><div class="strategy-top"><span>HEDGE FUTURO</span><span class="strategy-tag green">TRAVA</span></div><h3 id="hedge-title">Vender 40 contratos BGI</h3><p id="hedge-copy">Protege 13.200 arrobas ao preço futuro informado, sujeito ao risco de base e ajustes diários.</p><div class="strategy-result"><span>Margem bruta protegida</span><strong id="hedge-margin">R$ 32,80/@</strong></div></article>
+          <article class="strategy-card"><div class="strategy-top"><span>PUT · PISO DE VENDA</span><span class="strategy-tag">SEGURO</span></div><h3>Comprar put</h3><div class="option-fields"><label>Strike<input id="put-strike" type="number" value="320" step="0.01"></label><label>Prêmio/@<input id="put-premium" type="number" value="4.50" step="0.01"></label></div><p>Garante piso e preserva participação na alta. A perda máxima da opção é o prêmio pago.</p><div class="strategy-result"><span>Piso líquido estimado</span><strong id="put-floor">R$ 315,50/@</strong></div></article>
+          <article class="strategy-card"><div class="strategy-top"><span>COLLAR · PUT + CALL</span><span class="strategy-tag amber">TRAVA FLEXÍVEL</span></div><h3>Comprar put e vender call</h3><div class="option-fields"><label>Strike call<input id="call-strike" type="number" value="335" step="0.01"></label><label>Prêmio/@<input id="call-premium" type="number" value="3.20" step="0.01"></label></div><p>Reduz o custo do seguro, mas limita o ganho acima do strike da call.</p><div class="strategy-result"><span>Faixa líquida estimada</span><strong id="collar-range">R$ 318,70–338,20</strong></div></article>
+        </div>
+        <div class="risk-box"><strong>Leitura educacional, não ordem de investimento.</strong><span>Derivativos envolvem margem, ajustes diários, liquidez, risco de base e perdas. Valide vencimento, série, prêmio e quantidade com sua corretora.</span></div>
       </section>
 
       <section class="data-note" aria-label="Informações sobre os dados">
