@@ -68,14 +68,41 @@ async function loadDollar() {
   try {
     const response = await fetch(url); if (!response.ok) throw new Error("PTAX indisponível");
     const data = await response.json(); const quote = data.value?.[0]?.cotacaoVenda;
-    if (quote) { state.kpis[1].value = quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); renderKpis(); $("#sync-label").textContent="PTAX atualizada"; }
-  } catch { $("#sync-label").textContent="Dados referenciais"; }
+    if (quote) {
+      state.kpis[1].value = quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+      localStorage.setItem("dashboi-ptax", JSON.stringify({ quote, at: Date.now() }));
+      renderKpis(); $("#sync-label").textContent="PTAX e clima atualizados";
+    }
+  } catch {
+    const cached = JSON.parse(localStorage.getItem("dashboi-ptax") || "null");
+    if (cached?.quote) { state.kpis[1].value = cached.quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); renderKpis(); }
+    $("#sync-label").textContent="Últimos dados disponíveis";
+  }
+}
+
+const weatherCodes = code => ({0:"Céu limpo",1:"Predomínio de sol",2:"Parcialmente nublado",3:"Nublado",45:"Neblina",48:"Neblina",51:"Garoa leve",53:"Garoa",55:"Garoa forte",61:"Chuva leve",63:"Chuva",65:"Chuva forte",80:"Pancadas de chuva",81:"Pancadas de chuva",82:"Pancadas fortes",95:"Trovoadas"}[code] || "Condição variável");
+
+async function loadWeather() {
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=-20.4428&longitude=-54.6464&current=temperature_2m,relative_humidity_2m,weather_code&daily=precipitation_sum&timezone=America%2FCampo_Grande&forecast_days=7";
+  try {
+    const response = await fetch(url); if (!response.ok) throw new Error("Clima indisponível");
+    const data = await response.json();
+    const weather = { temp: Math.round(data.current.temperature_2m), humidity: Math.round(data.current.relative_humidity_2m), code: data.current.weather_code, rain: Math.round(data.daily.precipitation_sum.reduce((sum,value)=>sum+(value||0),0)), at: Date.now() };
+    localStorage.setItem("dashboi-weather", JSON.stringify(weather)); renderWeather(weather);
+  } catch { const cached = JSON.parse(localStorage.getItem("dashboi-weather") || "null"); if (cached) renderWeather(cached); else $("#weather-label").textContent="Clima indisponível"; }
+}
+
+function renderWeather(weather) {
+  $("#weather-temp").textContent = `${weather.temp}°`;
+  $("#weather-humidity").textContent = `${weather.humidity}%`;
+  $("#weather-rain").textContent = `${weather.rain} mm`;
+  $("#weather-label").textContent = weatherCodes(weather.code);
 }
 
 function init() {
   $("#today").textContent = formatDate(new Date()).replace(/^./,c=>c.toUpperCase()) + " · Visão executiva do mercado";
   $("#gauge").style.setProperty("--score",state.index); $("#gauge strong").textContent=state.index;
-  renderKpis(); renderDrivers(); renderBars(); drawChart(); loadDollar();
+  renderKpis(); renderDrivers(); renderBars(); drawChart(); Promise.allSettled([loadDollar(), loadWeather()]);
   $("#updated-at").textContent=`Atualizado às ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
@@ -87,4 +114,8 @@ $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal(
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
 window.addEventListener("resize",()=>drawChart(Number(document.querySelector(".range-tabs .active").dataset.range)));
 if(localStorage.getItem("dashboi-theme")==="light")document.body.classList.add("light");
+let installPrompt;
+window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; $("#install-btn").hidden = false; });
+$("#install-btn").addEventListener("click", async () => { if (!installPrompt) return; installPrompt.prompt(); await installPrompt.userChoice; installPrompt = null; $("#install-btn").hidden = true; });
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));
 init();

@@ -42,6 +42,7 @@
         </div>
         <div class="top-actions">
           <span class="sync-pill"><span class="live-dot"></span><span id="sync-label">Dados sincronizados</span></span>
+          <button class="install-btn" id="install-btn" hidden>Instalar app</button>
           <button class="icon-btn" id="theme-btn" aria-label="Alternar tema">◐</button>
         </div>
       </header>
@@ -102,9 +103,14 @@
         </article>
         <article class="panel weather" id="clima">
           <div class="panel-head"><div><p class="eyebrow">CLIMA OPERACIONAL</p><h2>Campo Grande, MS</h2></div><span class="weather-icon">☀</span></div>
-          <div class="temp"><strong>27°</strong><span>Parcialmente nublado</span></div>
-          <div class="weather-stats"><span><small>Chuva 7 dias</small><strong>18 mm</strong></span><span><small>Umidade</small><strong>64%</strong></span></div>
+          <div class="temp"><strong id="weather-temp">27°</strong><span id="weather-label">Carregando clima...</span></div>
+          <div class="weather-stats"><span><small>Chuva prevista 7 dias</small><strong id="weather-rain">18 mm</strong></span><span><small>Umidade</small><strong id="weather-humidity">64%</strong></span></div>
         </article>
+      </section>
+
+      <section class="data-note" aria-label="Informações sobre os dados">
+        <div><span class="live-dot"></span><strong>Dados ao vivo</strong><span>PTAX · Banco Central</span><span>Clima · Open-Meteo</span></div>
+        <p>Arroba, milho, escalas, exportações e margem são referências demonstrativas até a conexão das respectivas fontes licenciadas.</p>
       </section>
 
       <footer><span>DASHBOI © 2026</span><span>Dados referenciais · valide antes de negociar</span></footer>
