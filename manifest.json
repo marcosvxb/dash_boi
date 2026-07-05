@@ -1,0 +1,10 @@
+{
+  "name": "DASHBOI — Inteligência Pecuária",
+  "short_name": "DASHBOI",
+  "description": "Painel executivo de inteligência para pecuária de corte.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07100d",
+  "theme_color": "#07140f",
+  "lang": "pt-BR"
+}

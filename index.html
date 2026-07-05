@@ -1,74 +1,123 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#07120f" />
-  <title>DASHBOI | Painel Pecuário</title>
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07140f">
+  <meta name="description" content="DASHBOI — inteligência de mercado para pecuária de corte.">
+  <title>DASHBOI | Inteligência Pecuária</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <main class="shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">Fazenda Gruta Azul</p>
-        <h1>DASHBOI</h1>
-        <p class="subtitle">Painel diário para mercado pecuário, exportações, câmbio, custos e clima.</p>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#inicio" aria-label="DASHBOI — início">
+        <span class="brand-mark">DB</span>
+        <span><strong>DASHBOI</strong><small>Inteligência pecuária</small></span>
+      </a>
+      <nav aria-label="Navegação principal">
+        <a class="nav-link active" href="#inicio"><span>◫</span>Visão geral</a>
+        <a class="nav-link" href="#mercado"><span>↗</span>Mercado</a>
+        <a class="nav-link" href="#exportacoes"><span>◎</span>Exportações</a>
+        <a class="nav-link" href="#custos"><span>◇</span>Alimentação</a>
+        <a class="nav-link" href="#clima"><span>☼</span>Clima</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="live-dot"></span>
+        <div><strong>Monitor ativo</strong><small>Atualização diária</small></div>
       </div>
-      <div class="status-card">
-        <span class="dot"></span>
+    </aside>
+
+    <main class="main" id="inicio">
+      <header class="topbar">
+        <button class="menu-btn" id="menu-btn" aria-label="Abrir menu">☰</button>
         <div>
-          <strong id="market-label">Mercado neutro</strong>
-          <small id="updated-at">Atualizando...</small>
+          <p class="eyebrow">FAZENDA GRUTA AZUL</p>
+          <h1>Bom dia, Marcos.</h1>
+          <p class="muted" id="today">Visão executiva do mercado</p>
         </div>
-      </div>
-    </header>
+        <div class="top-actions">
+          <span class="sync-pill"><span class="live-dot"></span><span id="sync-label">Dados sincronizados</span></span>
+          <button class="icon-btn" id="theme-btn" aria-label="Alternar tema">◐</button>
+        </div>
+      </header>
 
-    <section class="score-grid">
-      <article class="score-card">
-        <div class="score-top"><span>Índice de pressão da arroba</span><strong id="score-value">68</strong></div>
-        <div class="bar"><span id="score-bar"></span></div>
-        <p id="score-text">Exportações firmes e dólar sustentam preços; milho ainda pressiona margem.</p>
-      </article>
-      <article class="reading-card">
-        <h2>Leitura do dia</h2>
-        <ul id="drivers"></ul>
-      </article>
-    </section>
+      <section class="hero-grid">
+        <article class="index-card">
+          <div class="index-copy">
+            <div class="section-label"><span>ÍNDICE DASHBOI</span><span class="info">i</span></div>
+            <div class="index-value-row"><strong id="index-value">72</strong><span>/100</span></div>
+            <div class="trend-label"><span class="trend-dot"></span><strong id="index-label">MERCADO ALTISTA</strong></div>
+            <p id="index-summary">Exportações e câmbio sustentam a arroba. O custo do milho limita a margem do confinamento.</p>
+            <div class="index-scale"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="scale-labels"><small>Baixista</small><small>Neutro</small><small>Altista</small></div>
+          </div>
+          <div class="gauge" id="gauge"><div><strong>72</strong><small>+4 pts</small></div></div>
+        </article>
 
-    <section class="cards" id="kpis"></section>
+        <article class="decision-card">
+          <div class="section-label"><span>DECISÃO DO DIA</span><span class="signal">SINAL POSITIVO</span></div>
+          <h2>Vender com estratégia</h2>
+          <p>O cenário favorece negociações, mas sem liquidar toda a posição. Priorize lotes prontos e preserve flexibilidade.</p>
+          <div class="confidence"><span>Confiança da leitura</span><strong>78%</strong></div>
+          <div class="confidence-bar"><span style="width:78%"></span></div>
+          <button class="text-btn" id="analysis-btn">Ver análise completa <span>→</span></button>
+        </article>
+      </section>
 
-    <section class="grid-2">
-      <article class="panel">
-        <div class="panel-head"><h2>Arroba MS - histórico</h2><span>R$/@</span></div>
-        <canvas id="arrobaChart" height="220"></canvas>
-      </article>
-      <article class="panel">
-        <div class="panel-head"><h2>Exportações brasileiras</h2><span>mil t</span></div>
-        <canvas id="exportChart" height="220"></canvas>
-      </article>
-    </section>
+      <section class="kpi-section" id="mercado">
+        <div class="section-head"><div><p class="eyebrow">PULSO DO MERCADO</p><h2>Indicadores essenciais</h2></div><span class="updated" id="updated-at">Atualizado agora</span></div>
+        <div class="kpi-grid" id="kpi-grid"></div>
+      </section>
 
-    <section class="grid-2">
-      <article class="panel">
-        <div class="panel-head"><h2>Custo alimentar</h2><span>R$/sc e R$/t</span></div>
-        <canvas id="feedChart" height="220"></canvas>
-      </article>
-      <article class="panel">
-        <div class="panel-head"><h2>Clima operacional</h2><span>chuva mm</span></div>
-        <canvas id="weatherChart" height="220"></canvas>
-      </article>
-    </section>
+      <section class="content-grid">
+        <article class="panel chart-panel">
+          <div class="panel-head"><div><p class="eyebrow">PREÇO DA ARROBA</p><h2>Arroba MS</h2></div><div class="range-tabs"><button class="active" data-range="30">30D</button><button data-range="90">3M</button><button data-range="365">1A</button></div></div>
+          <div class="chart-summary"><strong>R$ 318,50</strong><span class="positive">+2,4% no período</span></div>
+          <div class="chart-wrap"><canvas id="price-chart" aria-label="Histórico da arroba MS"></canvas></div>
+        </article>
 
-    <section class="sources panel">
-      <h2>Fontes confiáveis monitoradas</h2>
-      <div class="source-list">
-        <span>Banco Central</span><span>Comex Stat / MDIC</span><span>ABIEC</span><span>CEPEA</span><span>B3</span><span>CONAB</span><span>INMET</span><span>IBGE</span><span>USDA</span><span>NOAA</span>
-      </div>
-      <p>Os campos sem API pública direta ficam editáveis no arquivo <code>app.js</code>. O dólar tenta atualização automática via API pública do Banco Central.</p>
-    </section>
-  </main>
+        <article class="panel drivers-panel">
+          <div class="panel-head"><div><p class="eyebrow">COMPOSIÇÃO DO ÍNDICE</p><h2>Forças do mercado</h2></div><span class="badge">Hoje</span></div>
+          <div id="drivers"></div>
+        </article>
+      </section>
+
+      <section class="lower-grid">
+        <article class="panel" id="exportacoes">
+          <div class="panel-head"><div><p class="eyebrow">EXPORTAÇÕES</p><h2>Ritmo mensal</h2></div><span class="positive">▲ 12,8%</span></div>
+          <div class="export-total"><strong>238,4</strong><span>mil toneladas<br>no mês</span></div>
+          <div class="mini-bars" id="export-bars"></div>
+        </article>
+        <article class="panel" id="custos">
+          <div class="panel-head"><div><p class="eyebrow">MARGEM ESTIMADA</p><h2>Confinamento</h2></div><span class="badge amber">Atenção</span></div>
+          <div class="margin-value"><strong>R$ 412</strong><span>por cabeça</span></div>
+          <div class="cost-row"><span>Receita projetada</span><strong>R$ 6.420</strong></div>
+          <div class="cost-row"><span>Custo estimado</span><strong>R$ 6.008</strong></div>
+          <p class="panel-note">Milho representa 34% do custo alimentar.</p>
+        </article>
+        <article class="panel weather" id="clima">
+          <div class="panel-head"><div><p class="eyebrow">CLIMA OPERACIONAL</p><h2>Campo Grande, MS</h2></div><span class="weather-icon">☀</span></div>
+          <div class="temp"><strong>27°</strong><span>Parcialmente nublado</span></div>
+          <div class="weather-stats"><span><small>Chuva 7 dias</small><strong>18 mm</strong></span><span><small>Umidade</small><strong>64%</strong></span></div>
+        </article>
+      </section>
+
+      <footer><span>DASHBOI © 2026</span><span>Dados referenciais · valide antes de negociar</span></footer>
+    </main>
+  </div>
+
+  <dialog id="analysis-dialog">
+    <button class="dialog-close" id="dialog-close" aria-label="Fechar">×</button>
+    <p class="eyebrow">ANÁLISE EXECUTIVA</p>
+    <h2>Por que o mercado está altista?</h2>
+    <p>O avanço das exportações, a demanda chinesa e o dólar acima de R$ 5 ampliam a sustentação da arroba. Escalas mais curtas reduzem a pressão compradora dos frigoríficos.</p>
+    <p>O principal contraponto é o custo alimentar: milho e farelo de soja ainda comprimem a margem. A leitura favorece venda seletiva de animais terminados.</p>
+  </dialog>
   <script src="/app.js"></script>
 </body>
 </html>
