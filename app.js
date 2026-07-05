@@ -102,7 +102,9 @@ function renderWeather(weather) {
 const bgiNumber = id => Number(document.querySelector(id).value) || 0;
 const money = value => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-function calculateBgi() {
+let bgiFeedbackTimer;
+
+function calculateBgi(showFeedback = false) {
   const spot = bgiNumber("#spot-input"), future = bgiNumber("#future-input"), previous = bgiNumber("#previous-input");
   const heads = bgiNumber("#heads-input"), arrobas = bgiNumber("#arrobas-input"), cost = bgiNumber("#cost-input");
   const putStrike = bgiNumber("#put-strike"), putPremium = bgiNumber("#put-premium");
@@ -132,6 +134,13 @@ function calculateBgi() {
   document.querySelector("#collar-range").textContent = `${money(collarFloor)}–${money(collarCap)}`;
   const saved = { spot, future, previous, heads, arrobas, cost, putStrike, putPremium, callStrike, callPremium };
   localStorage.setItem("dashboi-bgi", JSON.stringify(saved));
+  const feedback = document.querySelector("#bgi-feedback");
+  if (feedback) {
+    feedback.textContent = showFeedback ? "Cenários recalculados agora." : "Atualização automática aplicada.";
+    feedback.classList.add("visible");
+    clearTimeout(bgiFeedbackTimer);
+    bgiFeedbackTimer = setTimeout(() => feedback.classList.remove("visible"), 1600);
+  }
 }
 
 function restoreBgi() {
@@ -154,7 +163,12 @@ $("#menu-btn").addEventListener("click",()=>$("#sidebar").classList.toggle("open
 document.querySelectorAll(".nav-link").forEach(link=>link.addEventListener("click",()=>{$("#sidebar").classList.remove("open");document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));link.classList.add("active");}));
 $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal());
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
-$("#bgi-calc").addEventListener("click", calculateBgi);
+const bgiInputs = "#spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
+document.querySelectorAll(bgiInputs).forEach(input => {
+  input.addEventListener("input", () => calculateBgi());
+  input.addEventListener("change", () => calculateBgi());
+});
+$("#bgi-calc").addEventListener("click", () => calculateBgi(true));
 window.addEventListener("resize",()=>drawChart(Number(document.querySelector(".range-tabs .active").dataset.range)));
 if(localStorage.getItem("dashboi-theme")==="light")document.body.classList.add("light");
 let installPrompt;

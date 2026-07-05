@@ -129,7 +129,8 @@
               <label>Arrobas por cabeça<input id="arrobas-input" type="number" step="0.1" value="20"></label>
               <label>Custo-alvo R$/@<input id="cost-input" type="number" step="0.01" value="292.00"></label>
             </div>
-            <button class="calc-btn" id="bgi-calc">Recalcular cenários</button>
+            <button class="calc-btn" id="bgi-calc" type="button">Recalcular cenários</button>
+            <p class="calc-feedback" id="bgi-feedback" aria-live="polite">Cenários atualizados automaticamente.</p>
           </article>
         </div>
         <div class="strategy-grid">
@@ -156,6 +157,7 @@
     <p>O avanço das exportações, a demanda chinesa e o dólar acima de R$ 5 ampliam a sustentação da arroba. Escalas mais curtas reduzem a pressão compradora dos frigoríficos.</p>
     <p>O principal contraponto é o custo alimentar: milho e farelo de soja ainda comprimem a margem. A leitura favorece venda seletiva de animais terminados.</p>
   </dialog>
+  <style>.calc-feedback{margin:8px 0 0;text-align:center;color:var(--muted);font-size:11px;min-height:15px;opacity:.55;transition:color .2s,opacity .2s}.calc-feedback.visible{color:var(--green);opacity:1}</style>
   <script src="/app.js"></script>
 </body>
 </html>
