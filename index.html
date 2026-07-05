@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07120f" />
+  <title>DASHBOI | Painel Pecuário</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Fazenda Gruta Azul</p>
+        <h1>DASHBOI</h1>
+        <p class="subtitle">Painel diário para mercado pecuário, exportações, câmbio, custos e clima.</p>
+      </div>
+      <div class="status-card">
+        <span class="dot"></span>
+        <div>
+          <strong id="market-label">Mercado neutro</strong>
+          <small id="updated-at">Atualizando...</small>
+        </div>
+      </div>
+    </header>
+
+    <section class="score-grid">
+      <article class="score-card">
+        <div class="score-top"><span>Índice de pressão da arroba</span><strong id="score-value">68</strong></div>
+        <div class="bar"><span id="score-bar"></span></div>
+        <p id="score-text">Exportações firmes e dólar sustentam preços; milho ainda pressiona margem.</p>
+      </article>
+      <article class="reading-card">
+        <h2>Leitura do dia</h2>
+        <ul id="drivers"></ul>
+      </article>
+    </section>
+
+    <section class="cards" id="kpis"></section>
+
+    <section class="grid-2">
+      <article class="panel">
+        <div class="panel-head"><h2>Arroba MS - histórico</h2><span>R$/@</span></div>
+        <canvas id="arrobaChart" height="220"></canvas>
+      </article>
+      <article class="panel">
+        <div class="panel-head"><h2>Exportações brasileiras</h2><span>mil t</span></div>
+        <canvas id="exportChart" height="220"></canvas>
+      </article>
+    </section>
+
+    <section class="grid-2">
+      <article class="panel">
+        <div class="panel-head"><h2>Custo alimentar</h2><span>R$/sc e R$/t</span></div>
+        <canvas id="feedChart" height="220"></canvas>
+      </article>
+      <article class="panel">
+        <div class="panel-head"><h2>Clima operacional</h2><span>chuva mm</span></div>
+        <canvas id="weatherChart" height="220"></canvas>
+      </article>
+    </section>
+
+    <section class="sources panel">
+      <h2>Fontes confiáveis monitoradas</h2>
+      <div class="source-list">
+        <span>Banco Central</span><span>Comex Stat / MDIC</span><span>ABIEC</span><span>CEPEA</span><span>B3</span><span>CONAB</span><span>INMET</span><span>IBGE</span><span>USDA</span><span>NOAA</span>
+      </div>
+      <p>Os campos sem API pública direta ficam editáveis no arquivo <code>app.js</code>. O dólar tenta atualização automática via API pública do Banco Central.</p>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
