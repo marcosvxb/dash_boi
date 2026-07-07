@@ -1,7 +1,7 @@
 const state = {
   index: 72,
   kpis: [
-    { label: "Arroba MS", value: "R$ 318,50", change: "+1,8%", tone: "positive", icon: "↗", spark: [35,40,38,47,45,57,61,70] },
+    { label: "CEPEA/B3 SP · 03/07", value: "R$ 329,85", change: "-0,87%", tone: "negative", icon: "↘", spark: [338.65,336.40,335.30,332.75,329.85] },
     { label: "Dólar PTAX", value: "R$ 5,42", change: "+0,4%", tone: "positive", icon: "$", spark: [51,49,52,50,55,56,54,58], dynamic: true },
     { label: "Milho / saca", value: "R$ 67,80", change: "+2,1%", tone: "negative", icon: "◇", spark: [45,46,51,54,58,57,63,67] },
     { label: "Escala média", value: "7,2 dias", change: "-0,8 dia", tone: "positive", icon: "◷", spark: [74,72,68,67,63,59,57,52] }
@@ -44,15 +44,15 @@ function renderBars() {
   $("#export-bars").innerHTML = [38,52,44,63,58,72,67,86,79,95,88,100].map(v => `<span style="height:${v}%"></span>`).join("");
 }
 
-function drawChart(days = 30) {
+function drawChart() {
   const canvas = $("#price-chart");
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
   canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
   const ctx = canvas.getContext("2d"); ctx.scale(dpr,dpr);
   const w = rect.width, h = rect.height, pad = 12;
-  const count = days === 30 ? 16 : days === 90 ? 24 : 36;
-  const values = Array.from({length:count},(_,i)=>292 + i*.95 + Math.sin(i*.85)*6 + Math.cos(i*.25)*3);
+  const values = [338.65, 336.40, 335.30, 332.75, 329.85];
+  const count = values.length;
   const min = Math.min(...values)-4, max = Math.max(...values)+4;
   const pts = values.map((v,i)=>({x:pad+(i/(count-1))*(w-pad*2),y:h-pad-((v-min)/(max-min))*(h-pad*2)}));
   const gradient=ctx.createLinearGradient(0,0,0,h); gradient.addColorStop(0,"rgba(50,213,131,.25)"); gradient.addColorStop(1,"rgba(50,213,131,0)");
@@ -105,6 +105,8 @@ const money = value => value.toLocaleString("pt-BR", { style: "currency", curren
 let bgiFeedbackTimer;
 
 function calculateBgi(showFeedback = false) {
+  const contract = document.querySelector("#contract-input").value.trim().toUpperCase() || "BGI";
+  const reference = document.querySelector("#reference-input").value;
   const spot = bgiNumber("#spot-input"), future = bgiNumber("#future-input"), previous = bgiNumber("#previous-input");
   const heads = bgiNumber("#heads-input"), arrobas = bgiNumber("#arrobas-input"), cost = bgiNumber("#cost-input");
   const putStrike = bgiNumber("#put-strike"), putPremium = bgiNumber("#put-premium");
@@ -119,6 +121,8 @@ function calculateBgi(showFeedback = false) {
   const collarFloor = putStrike - collarCost;
   const collarCap = callStrike - collarCost;
   const strength = Math.max(5, Math.min(95, 50 + change * 12 + (future > spot ? 8 : -8)));
+  const referenceLabel = reference ? new Date(`${reference}T12:00:00`).toLocaleDateString("pt-BR") : "sem data";
+  document.querySelector("#bgi-contract").textContent = `${contract} · referência ${referenceLabel}`;
   document.querySelector("#bgi-current-label").textContent = `${money(future)}/@`;
   const changeEl = document.querySelector("#bgi-change");
   changeEl.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2).replace(".", ",")}%`;
@@ -132,7 +136,8 @@ function calculateBgi(showFeedback = false) {
   document.querySelector("#hedge-margin").textContent = `${money(hedgeMargin)}/@`;
   document.querySelector("#put-floor").textContent = `${money(putFloor)}/@`;
   document.querySelector("#collar-range").textContent = `${money(collarFloor)}–${money(collarCap)}`;
-  const saved = { spot, future, previous, heads, arrobas, cost, putStrike, putPremium, callStrike, callPremium };
+  document.querySelector("#market-reference").textContent = `Referência manual: CEPEA/B3 físico de ${money(spot)}/@ e ${contract} de ${money(future)}/@ em ${referenceLabel}. Confirme os valores antes de negociar.`;
+  const saved = { version: 2, contract, reference, spot, future, previous, heads, arrobas, cost, putStrike, putPremium, callStrike, callPremium };
   localStorage.setItem("dashboi-bgi", JSON.stringify(saved));
   const feedback = document.querySelector("#bgi-feedback");
   if (feedback) {
@@ -145,8 +150,8 @@ function calculateBgi(showFeedback = false) {
 
 function restoreBgi() {
   const saved = JSON.parse(localStorage.getItem("dashboi-bgi") || "null");
-  if (!saved) return;
-  const ids = {spot:"#spot-input",future:"#future-input",previous:"#previous-input",heads:"#heads-input",arrobas:"#arrobas-input",cost:"#cost-input",putStrike:"#put-strike",putPremium:"#put-premium",callStrike:"#call-strike",callPremium:"#call-premium"};
+  if (!saved || saved.version !== 2) return;
+  const ids = {contract:"#contract-input",reference:"#reference-input",spot:"#spot-input",future:"#future-input",previous:"#previous-input",heads:"#heads-input",arrobas:"#arrobas-input",cost:"#cost-input",putStrike:"#put-strike",putPremium:"#put-premium",callStrike:"#call-strike",callPremium:"#call-premium"};
   Object.entries(ids).forEach(([key,id]) => { if (saved[key] != null) document.querySelector(id).value = saved[key]; });
 }
 
@@ -157,19 +162,18 @@ function init() {
   $("#updated-at").textContent=`Atualizado às ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
-document.querySelectorAll(".range-tabs button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".range-tabs button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");drawChart(Number(btn.dataset.range));}));
-$("#theme-btn").addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.setItem("dashboi-theme",document.body.classList.contains("light")?"light":"dark");drawChart(Number(document.querySelector(".range-tabs .active").dataset.range));});
+$("#theme-btn").addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.setItem("dashboi-theme",document.body.classList.contains("light")?"light":"dark");drawChart();});
 $("#menu-btn").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 document.querySelectorAll(".nav-link").forEach(link=>link.addEventListener("click",()=>{$("#sidebar").classList.remove("open");document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));link.classList.add("active");}));
 $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal());
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
-const bgiInputs = "#spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
+const bgiInputs = "#contract-input, #reference-input, #spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
 document.querySelectorAll(bgiInputs).forEach(input => {
   input.addEventListener("input", () => calculateBgi());
   input.addEventListener("change", () => calculateBgi());
 });
 $("#bgi-calc").addEventListener("click", () => calculateBgi(true));
-window.addEventListener("resize",()=>drawChart(Number(document.querySelector(".range-tabs .active").dataset.range)));
+window.addEventListener("resize", drawChart);
 if(localStorage.getItem("dashboi-theme")==="light")document.body.classList.add("light");
 let installPrompt;
 window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; $("#install-btn").hidden = false; });

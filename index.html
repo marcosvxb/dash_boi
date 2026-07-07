@@ -78,8 +78,8 @@
 
       <section class="content-grid">
         <article class="panel chart-panel">
-          <div class="panel-head"><div><p class="eyebrow">PREÇO DA ARROBA</p><h2>Arroba MS</h2></div><div class="range-tabs"><button class="active" data-range="30">30D</button><button data-range="90">3M</button><button data-range="365">1A</button></div></div>
-          <div class="chart-summary"><strong>R$ 318,50</strong><span class="positive">+2,4% no período</span></div>
+          <div class="panel-head"><div><p class="eyebrow">REFERÊNCIA FÍSICA</p><h2>CEPEA/B3 · São Paulo</h2></div><span class="badge">5 pregões informados</span></div>
+          <div class="chart-summary"><strong>R$ 329,85</strong><span class="negative">-0,87% em 03/07/2026</span></div>
           <div class="chart-wrap"><canvas id="price-chart" aria-label="Histórico da arroba MS"></canvas></div>
         </article>
 
@@ -113,18 +113,20 @@
         <div class="section-head"><div><p class="eyebrow">GESTÃO DE RISCO · B3</p><h2>Futuro de Boi Gordo — BGI</h2></div><span class="feed-status"><span class="feed-dot"></span>Feed B3 pendente</span></div>
         <div class="bgi-grid">
           <article class="panel bgi-market">
-            <div class="panel-head"><div><p class="eyebrow">CURVA E TENDÊNCIA</p><h2 id="bgi-contract">BGI — vencimento selecionado</h2></div><span class="badge amber">Simulação</span></div>
-            <div class="bgi-quote"><div><small>Futuro atual</small><strong id="bgi-current-label">R$ 324,80</strong></div><div><small>Variação</small><strong id="bgi-change" class="positive">+1,18%</strong></div></div>
+            <div class="panel-head"><div><p class="eyebrow">CONTRATO E TENDÊNCIA</p><h2 id="bgi-contract">BGIN26 · referência 03/07/2026</h2></div><span class="badge amber">Referência manual</span></div>
+            <div class="bgi-quote"><div><small>Preço do contrato</small><strong id="bgi-current-label">R$ 327,85</strong></div><div><small>Variação</small><strong id="bgi-change" class="positive">+0,08%</strong></div></div>
             <div class="trend-meter"><span id="bgi-meter"></span></div>
             <div class="trend-copy"><strong id="bgi-trend">Tendência altista moderada</strong><p id="bgi-trend-text">O futuro está acima do ajuste anterior e do preço físico informado.</p></div>
-            <p class="source-warning">Preço demonstrativo. Para tendência real intradiária, conecte um distribuidor autorizado de Market Data B3 ou sua corretora.</p>
+            <p class="source-warning" id="market-reference">Referência manual: CEPEA/B3 físico de R$ 329,85/@ e BGIN26 de R$ 327,85/@ em 03/07/2026. Confirme os valores antes de negociar.</p>
           </article>
           <article class="panel hedge-form">
             <div class="panel-head"><div><p class="eyebrow">PREMISSAS</p><h2>Simulador de proteção</h2></div><span class="info">i</span></div>
             <div class="input-grid">
-              <label>Preço físico R$/@<input id="spot-input" type="number" step="0.01" value="318.50"></label>
-              <label>BGI atual R$/@<input id="future-input" type="number" step="0.01" value="324.80"></label>
-              <label>Ajuste anterior R$/@<input id="previous-input" type="number" step="0.01" value="321.00"></label>
+              <label>Contrato selecionado<input id="contract-input" type="text" value="BGIN26"></label>
+              <label>Data da referência<input id="reference-input" type="date" value="2026-07-03"></label>
+              <label>CEPEA/B3 físico R$/@<input id="spot-input" type="number" step="0.01" value="329.85"></label>
+              <label>Contrato BGI R$/@<input id="future-input" type="number" step="0.01" value="327.85"></label>
+              <label>Ajuste anterior BGI R$/@<input id="previous-input" type="number" step="0.01" value="327.59"></label>
               <label>Cabeças previstas<input id="heads-input" type="number" step="1" value="660"></label>
               <label>Arrobas por cabeça<input id="arrobas-input" type="number" step="0.1" value="20"></label>
               <label>Custo-alvo R$/@<input id="cost-input" type="number" step="0.01" value="292.00"></label>
@@ -135,8 +137,8 @@
         </div>
         <div class="strategy-grid">
           <article class="strategy-card"><div class="strategy-top"><span>HEDGE FUTURO</span><span class="strategy-tag green">TRAVA</span></div><h3 id="hedge-title">Vender 40 contratos BGI</h3><p id="hedge-copy">Protege 13.200 arrobas ao preço futuro informado, sujeito ao risco de base e ajustes diários.</p><div class="strategy-result"><span>Margem bruta protegida</span><strong id="hedge-margin">R$ 32,80/@</strong></div></article>
-          <article class="strategy-card"><div class="strategy-top"><span>PUT · PISO DE VENDA</span><span class="strategy-tag">SEGURO</span></div><h3>Comprar put</h3><div class="option-fields"><label>Strike<input id="put-strike" type="number" value="320" step="0.01"></label><label>Prêmio/@<input id="put-premium" type="number" value="4.50" step="0.01"></label></div><p>Garante piso e preserva participação na alta. A perda máxima da opção é o prêmio pago.</p><div class="strategy-result"><span>Piso líquido estimado</span><strong id="put-floor">R$ 315,50/@</strong></div></article>
-          <article class="strategy-card"><div class="strategy-top"><span>COLLAR · PUT + CALL</span><span class="strategy-tag amber">TRAVA FLEXÍVEL</span></div><h3>Comprar put e vender call</h3><div class="option-fields"><label>Strike call<input id="call-strike" type="number" value="335" step="0.01"></label><label>Prêmio/@<input id="call-premium" type="number" value="3.20" step="0.01"></label></div><p>Reduz o custo do seguro, mas limita o ganho acima do strike da call.</p><div class="strategy-result"><span>Faixa líquida estimada</span><strong id="collar-range">R$ 318,70–338,20</strong></div></article>
+          <article class="strategy-card"><div class="strategy-top"><span>PUT · PISO DE VENDA</span><span class="strategy-tag">SIMULAÇÃO</span></div><h3>Comprar put</h3><div class="option-fields"><label>Strike manual<input id="put-strike" type="number" value="325" step="0.01"></label><label>Prêmio manual/@<input id="put-premium" type="number" value="4.50" step="0.01"></label></div><p>Premissas manuais, não cotações de opções. Garante piso e preserva participação na alta.</p><div class="strategy-result"><span>Piso líquido estimado</span><strong id="put-floor">R$ 320,50/@</strong></div></article>
+          <article class="strategy-card"><div class="strategy-top"><span>COLLAR · PUT + CALL</span><span class="strategy-tag amber">SIMULAÇÃO</span></div><h3>Comprar put e vender call</h3><div class="option-fields"><label>Strike call manual<input id="call-strike" type="number" value="335" step="0.01"></label><label>Prêmio manual/@<input id="call-premium" type="number" value="3.20" step="0.01"></label></div><p>Premissas manuais, não cotações. Reduz o custo do seguro, mas limita a alta.</p><div class="strategy-result"><span>Faixa líquida estimada</span><strong id="collar-range">R$ 323,70–333,70</strong></div></article>
         </div>
         <div class="risk-box"><strong>Leitura educacional, não ordem de investimento.</strong><span>Derivativos envolvem margem, ajustes diários, liquidez, risco de base e perdas. Valide vencimento, série, prêmio e quantidade com sua corretora.</span></div>
       </section>
