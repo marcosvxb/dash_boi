@@ -17,6 +17,42 @@ const state = {
 
 const $ = selector => document.querySelector(selector);
 const formatDate = date => new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" }).format(date);
+let cepeaSeries = [338.65, 336.40, 335.30, 332.75, 329.85];
+
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element) element.textContent = value;
+}
+
+function setCepeaReference(payload, fromCache = false) {
+  if (!payload?.latest?.value) return;
+  const latest = payload.latest;
+  cepeaSeries = payload.series?.length ? payload.series : cepeaSeries;
+  state.kpis[0] = {
+    ...state.kpis[0],
+    label: `CEPEA/B3 SP · ${latest.date.slice(0, 5)}`,
+    value: money(latest.value),
+    change: latest.dayChange,
+    tone: latest.dayChange?.startsWith("-") ? "negative" : "positive",
+    spark: cepeaSeries
+  };
+  renderKpis();
+  drawChart();
+  setText("#chart-value", money(latest.value));
+  setText("#chart-change", `${latest.dayChange} em ${latest.date}`);
+  const chartChange = document.querySelector("#chart-change");
+  if (chartChange) chartChange.className = latest.dayChange?.startsWith("-") ? "negative" : "positive";
+  setText("#chart-badge", `${cepeaSeries.length} pregões CEPEA`);
+  setText("#cepea-status", fromCache ? "CEPEA em cache" : "CEPEA atualizado");
+  const spotInput = document.querySelector("#spot-input");
+  const referenceInput = document.querySelector("#reference-input");
+  if (spotInput && !localStorage.getItem("dashboi-bgi-user-edited")) spotInput.value = latest.value.toFixed(2);
+  if (referenceInput && !localStorage.getItem("dashboi-bgi-user-edited")) {
+    const [day, month, year] = latest.date.split("/");
+    referenceInput.value = `${year}-${month}-${day}`;
+  }
+  calculateBgi();
+}
 
 function sparkline(values, tone) {
   const w = 60, h = 22, min = Math.min(...values), max = Math.max(...values);
@@ -51,7 +87,7 @@ function drawChart() {
   canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
   const ctx = canvas.getContext("2d"); ctx.scale(dpr,dpr);
   const w = rect.width, h = rect.height, pad = 12;
-  const values = [338.65, 336.40, 335.30, 332.75, 329.85];
+  const values = cepeaSeries;
   const count = values.length;
   const min = Math.min(...values)-4, max = Math.max(...values)+4;
   const pts = values.map((v,i)=>({x:pad+(i/(count-1))*(w-pad*2),y:h-pad-((v-min)/(max-min))*(h-pad*2)}));
@@ -77,6 +113,20 @@ async function loadDollar() {
     const cached = JSON.parse(localStorage.getItem("dashboi-ptax") || "null");
     if (cached?.quote) { state.kpis[1].value = cached.quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); renderKpis(); }
     $("#sync-label").textContent="Últimos dados disponíveis";
+  }
+}
+
+async function loadCepea() {
+  try {
+    const response = await fetch("/api/cepea", { cache: "no-store" });
+    if (!response.ok) throw new Error("CEPEA indisponível");
+    const payload = await response.json();
+    localStorage.setItem("dashboi-cepea", JSON.stringify(payload));
+    setCepeaReference(payload);
+  } catch {
+    const cached = JSON.parse(localStorage.getItem("dashboi-cepea") || "null");
+    if (cached) setCepeaReference(cached, true);
+    else setText("#cepea-status", "CEPEA manual");
   }
 }
 
@@ -158,8 +208,8 @@ function restoreBgi() {
 function init() {
   $("#today").textContent = formatDate(new Date()).replace(/^./,c=>c.toUpperCase()) + " · Visão executiva do mercado";
   $("#gauge").style.setProperty("--score",state.index); $("#gauge strong").textContent=state.index;
-  renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadDollar(), loadWeather()]);
-  $("#updated-at").textContent=`Atualizado às ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
+  renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadCepea(), loadDollar(), loadWeather()]);
+  $("#updated-at").textContent=`Auto: PTAX, clima e CEPEA · BGI manual · ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
 $("#theme-btn").addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.setItem("dashboi-theme",document.body.classList.contains("light")?"light":"dark");drawChart();});
@@ -169,8 +219,8 @@ $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal(
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
 const bgiInputs = "#contract-input, #reference-input, #spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
 document.querySelectorAll(bgiInputs).forEach(input => {
-  input.addEventListener("input", () => calculateBgi());
-  input.addEventListener("change", () => calculateBgi());
+  input.addEventListener("input", () => { localStorage.setItem("dashboi-bgi-user-edited", "1"); calculateBgi(); });
+  input.addEventListener("change", () => { localStorage.setItem("dashboi-bgi-user-edited", "1"); calculateBgi(); });
 });
 $("#bgi-calc").addEventListener("click", () => calculateBgi(true));
 window.addEventListener("resize", drawChart);
