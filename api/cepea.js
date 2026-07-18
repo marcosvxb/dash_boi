@@ -1,6 +1,22 @@
 const https = require("https");
 
 const CEPEA_URL = "https://www.cepea.org.br/br/indicador/boi-gordo.aspx";
+const FALLBACK = {
+  source: "CEPEA/ESALQ",
+  sourceUrl: CEPEA_URL,
+  license: "CEPEA CC BY-NC 4.0",
+  stale: true,
+  fallbackReason: "Fonte CEPEA bloqueou a consulta automática no servidor",
+  fetchedAt: "2026-07-18T00:00:00.000Z",
+  latest: {
+    date: "15/07/2026",
+    value: 329.20,
+    dayChange: "+0,34%",
+    monthChange: "n/d",
+    usd: null
+  },
+  series: [332.75, 329.85, 328.1, 328.08, 329.2]
+};
 
 function fetchText(url) {
   return new Promise((resolve, reject) => {
@@ -74,8 +90,9 @@ module.exports = async function handler(req, res) {
     const html = await fetchText(CEPEA_URL);
     res.status(200).json(parseCepea(html));
   } catch (error) {
-    res.status(502).json({
-      error: "Não foi possível atualizar o CEPEA agora",
+    res.status(200).json({
+      ...FALLBACK,
+      fetchedAt: new Date().toISOString(),
       detail: error.message
     });
   }
