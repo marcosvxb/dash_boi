@@ -1,7 +1,7 @@
 const state = {
   index: 72,
   kpis: [
-    { label: "CEPEA SP · 05/11 (referência)", value: "R$ 391,35", change: "+0,13%", tone: "negative", icon: "↘", spark: [389.20,389.90,390.00,390.85,391.35] },
+    { label: "CEPEA SP · 05/11 (referência histórica)", value: "R$ 391,35", change: "+0,13%", tone: "positive", icon: "↘", spark: [389.20,389.90,390.00,390.85,391.35] },
     { label: "Dólar PTAX", value: "R$ 5,42", change: "+0,4%", tone: "positive", icon: "$", spark: [51,49,52,50,55,56,54,58], dynamic: true },
     { label: "Milho / saca", value: "R$ 67,80", change: "+2,1%", tone: "negative", icon: "◇", spark: [45,46,51,54,58,57,63,67] },
     { label: "Escala média", value: "7,2 dias", change: "-0,8 dia", tone: "positive", icon: "◷", spark: [74,72,68,67,63,59,57,52] }
@@ -17,7 +17,7 @@ const state = {
 
 const $ = selector => document.querySelector(selector);
 const formatDate = date => new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" }).format(date);
-let cepeaSeries = [338.65, 336.40, 335.30, 332.75, 329.85];
+let cepeaSeries = [389.20, 389.90, 390.00, 390.85, 391.35];
 
 function setText(selector, value) {
   const element = document.querySelector(selector);
@@ -30,7 +30,7 @@ function setCepeaReference(payload, fromCache = false) {
   cepeaSeries = payload.series?.length ? payload.series : cepeaSeries;
   state.kpis[0] = {
     ...state.kpis[0],
-    label: `CEPEA/B3 SP · ${latest.date.slice(0, 5)}`,
+    label: `CEPEA SP · ${latest.date.slice(0, 5)}${payload.stale || fromCache ? " · HISTÓRICO" : ""}`,
     value: money(latest.value),
     change: latest.dayChange,
     tone: latest.dayChange?.startsWith("-") ? "negative" : "positive",
@@ -43,7 +43,7 @@ function setCepeaReference(payload, fromCache = false) {
   const chartChange = document.querySelector("#chart-change");
   if (chartChange) chartChange.className = latest.dayChange?.startsWith("-") ? "negative" : "positive";
   setText("#chart-badge", `${cepeaSeries.length} pregões CEPEA`);
-  setText("#cepea-status", payload.stale ? "CEPEA SNAPSHOT HISTÓRICO (não é cotação ao vivo): "+latest.date : fromCache ? "CEPEA em cache" : "CEPEA atualizado");
+  setText("#cepea-status", payload.stale || fromCache ? "CEPEA HISTÓRICO (não é cotação ao vivo): " + latest.date : "CEPEA/ESALQ atualizado: " + latest.date + " (" + payload.source + ")");
   const spotInput = document.querySelector("#spot-input");
   const referenceInput = document.querySelector("#reference-input");
   if (spotInput && !payload.stale && !localStorage.getItem("dashboi-bgi-user-edited")) spotInput.value = latest.value.toFixed(2);
@@ -118,15 +118,22 @@ async function loadDollar() {
 
 async function loadCepea() {
   try {
-    const response = await fetch("/api/cepea", { cache: "no-store" });
+    const response = await fetch("/api/cepea?v=20261106b", { cache: "no-store" });
     if (!response.ok) throw new Error("CEPEA indisponível");
     const payload = await response.json();
     localStorage.setItem("dashboi-cepea", JSON.stringify(payload));
     setCepeaReference(payload);
   } catch {
     const cached = JSON.parse(localStorage.getItem("dashboi-cepea") || "null");
-    if (cached) setCepeaReference(cached, true);
-    else setText("#cepea-status", "CEPEA manual");
+    if (cached?.latest?.date) {
+      const [d,m,y] = cached.latest.date.split("/").map(Number);
+      const ageDays = (Date.now() - Date.UTC(y,m-1,d)) / 86400000;
+      if (ageDays >= -1 && ageDays <= 7) {
+        setCepeaReference({ ...cached, stale: true }, true);
+        return;
+      }
+    }
+    setText("#cepea-status", "CEPEA: atualização indisponível; referência histórica de 05/11/2026.");
   }
 }
 
