@@ -161,6 +161,71 @@ const money = value => value.toLocaleString("pt-BR", { style: "currency", curren
 
 let bgiFeedbackTimer;
 
+let bgiFeedData = null;
+let bgiQuoteEditedManually = false;
+
+function bgiStatus(message, source = "manual") {
+  const status = document.querySelector("#bgi-feed-status");
+  const badge = document.querySelector("#bgi-data-mode");
+  const note = document.querySelector("#bgi-source-note");
+  if (status) status.textContent = message;
+  if (badge) badge.textContent = source === "automatic" ? "B3 · fechamento publicado" : "Preço manual / sem atualização";
+  if (note) note.textContent = source === "automatic"
+    ? "Fonte: B3 via Notícias Agrícolas. Fechamento datado, não é negociação em tempo real; confirme a fonte antes de operar."
+    : "Cotação automática indisponível ou alterada manualmente. Valide preço, contrato e data na fonte antes de usar o hedge.";
+}
+
+function applyBgiQuote() {
+  if (!bgiFeedData?.contracts?.length) return;
+  const choice = document.querySelector("#contract-input");
+  const selected = bgiFeedData.contracts.find(item => item.code === choice.value);
+  if (!selected) {
+    bgiStatus("Contrato sem cotação disponível", "manual");
+    return;
+  }
+  const [day,month,year] = bgiFeedData.date.split("/");
+  document.querySelector("#reference-input").value = year+"-"+month+"-"+day;
+  document.querySelector("#future-input").value = selected.value.toFixed(2);
+  document.querySelector("#previous-input").value = Number.isFinite(selected.previous) ? selected.previous.toFixed(2) : "";
+  bgiQuoteEditedManually = false;
+  bgiStatus("B3 · fechamento " + bgiFeedData.date + " · " + selected.name, "automatic");
+  calculateBgi();
+}
+
+async function loadBgi() {
+  bgiStatus("Consultando último fechamento da B3…", "manual");
+  try {
+    const response = await fetch("/api/bgi?v=20261106", { cache:"no-store" });
+    const payload = await response.json();
+    if (!response.ok || payload.stale || !Array.isArray(payload.contracts) || !payload.contracts.length)
+      throw new Error(payload.message || "Sem cotações verificadas");
+    bgiFeedData = payload;
+    const selector = document.querySelector("#contract-input");
+    const current = selector.value;
+    selector.replaceChildren(...payload.contracts.map(item => {
+      const option = document.createElement("option");
+      option.value = item.code;
+      option.textContent = item.code+" · "+item.name;
+      return option;
+    }));
+    selector.value = payload.contracts.some(item=>item.code===current) ? current : payload.contracts[0].code;
+    applyBgiQuote();
+    const date = payload.date;
+    document.querySelector("#bgi-source-note").textContent =
+      "Fonte: B3 via Notícias Agrícolas · fechamento de "+date+" · atualização automática a cada abertura do painel. Cotação de fechamento, não é tempo real.";
+  } catch (error) {
+    bgiFeedData = null;
+    bgiStatus("B3 indisponível · conferência manual necessária", "manual");
+    const future = document.querySelector("#future-input");
+    if (!bgiQuoteEditedManually) {
+      future.value = "";
+      document.querySelector("#previous-input").value = "";
+      calculateBgi();
+    }
+  }
+}
+
+
 function calculateBgi(showFeedback = false) {
   const contract = document.querySelector("#contract-input").value.trim().toUpperCase() || "BGI";
   const reference = document.querySelector("#reference-input").value;
@@ -180,7 +245,16 @@ function calculateBgi(showFeedback = false) {
   const strength = Math.max(5, Math.min(95, 50 + change * 12 + (future > spot ? 8 : -8)));
   const referenceLabel = reference ? new Date(`${reference}T12:00:00`).toLocaleDateString("pt-BR") : "sem data";
   document.querySelector("#bgi-contract").textContent = `${contract} · referência ${referenceLabel}`;
-  document.querySelector("#bgi-current-label").textContent = `${money(future)}/@`;
+  document.querySelector("#bgi-current-label").textContent = future > 0 ? `${money(future)}/@` : "Sem cotação";
+  if (!(future > 0)) {
+    document.querySelector("#bgi-change").textContent = "—";
+    document.querySelector("#bgi-trend-text").textContent = "Aguardando cotação B3 verificada por vencimento.";
+    document.querySelector("#bgi-trend").textContent = "Sem preço para simulação";
+    document.querySelector("#hedge-title").textContent = "Hedge pendente de cotação";
+    document.querySelector("#hedge-margin").textContent = "—";
+    document.querySelector("#market-reference").textContent = "Sem cotação B3 validada. Insira uma referência manual conferida ou atualize o feed.";
+    return;
+  }
   const changeEl = document.querySelector("#bgi-change");
   changeEl.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2).replace(".", ",")}%`;
   changeEl.className = change > .25 ? "positive" : change < -.25 ? "negative" : "neutral";
@@ -193,7 +267,7 @@ function calculateBgi(showFeedback = false) {
   document.querySelector("#hedge-margin").textContent = `${money(hedgeMargin)}/@`;
   document.querySelector("#put-floor").textContent = `${money(putFloor)}/@`;
   document.querySelector("#collar-range").textContent = `${money(collarFloor)}–${money(collarCap)}`;
-  document.querySelector("#market-reference").textContent = `Referência manual: CEPEA/B3 físico de ${money(spot)}/@ e ${contract} de ${money(future)}/@ em ${referenceLabel}. Confirme os valores antes de negociar.`;
+  document.querySelector("#market-reference").textContent = `${!bgiQuoteEditedManually && bgiFeedData ? "Fechamento B3 publicado" : "Referência manual"}: CEPEA físico SP ${money(spot)}/@; BGI ${contract} ${money(future)}/@ em ${referenceLabel}. Confirme a data e o risco de base antes de operar.`;
   const saved = { version: 2, contract, reference, spot, future, previous, heads, arrobas, cost, putStrike, putPremium, callStrike, callPremium };
   localStorage.setItem("dashboi-bgi", JSON.stringify(saved));
   const feedback = document.querySelector("#bgi-feedback");
@@ -215,7 +289,7 @@ function restoreBgi() {
 function init() {
   $("#today").textContent = formatDate(new Date()).replace(/^./,c=>c.toUpperCase()) + " · Visão executiva do mercado";
   $("#gauge").style.setProperty("--score",state.index); $("#gauge strong").textContent=state.index;
-  renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadCepea(), loadDollar(), loadWeather()]);
+  renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadCepea(), loadDollar(), loadWeather(), loadBgi()]);
   $("#updated-at").textContent=`Auto: PTAX, clima e CEPEA · BGI manual · ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
@@ -224,9 +298,21 @@ $("#menu-btn").addEventListener("click",()=>$("#sidebar").classList.toggle("open
 document.querySelectorAll(".nav-link").forEach(link=>link.addEventListener("click",()=>{$("#sidebar").classList.remove("open");document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));link.classList.add("active");}));
 $("#analysis-btn").addEventListener("click",()=>$("#analysis-dialog").showModal());
 $("#dialog-close").addEventListener("click",()=>$("#analysis-dialog").close());
-const bgiInputs = "#contract-input, #reference-input, #spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
+const bgiInputs = "#reference-input, #spot-input, #future-input, #previous-input, #heads-input, #arrobas-input, #cost-input, #put-strike, #put-premium, #call-strike, #call-premium";
+document.querySelector("#contract-input").addEventListener("change", () => {
+  localStorage.setItem("dashboi-bgi-user-edited", "1");
+  if (bgiFeedData) applyBgiQuote();
+  else calculateBgi();
+});
+document.querySelector("#bgi-refresh").addEventListener("click", loadBgi);
 document.querySelectorAll(bgiInputs).forEach(input => {
-  input.addEventListener("input", () => { localStorage.setItem("dashboi-bgi-user-edited", "1"); calculateBgi(); });
+  input.addEventListener("input", () => {
+    localStorage.setItem("dashboi-bgi-user-edited", "1");
+    if (["future-input","previous-input"].includes(input.id)) {
+      bgiQuoteEditedManually = true; bgiStatus("B3 · cotação alterada manualmente", "manual");
+    }
+    calculateBgi();
+  });
   input.addEventListener("change", () => { localStorage.setItem("dashboi-bgi-user-edited", "1"); calculateBgi(); });
 });
 $("#bgi-calc").addEventListener("click", () => calculateBgi(true));
