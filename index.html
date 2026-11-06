@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/intelligence.css">
 </head>
 <body>
   <div class="app-shell">
@@ -21,6 +22,7 @@
       </a>
       <nav aria-label="Navegação principal">
         <a class="nav-link active" href="#inicio"><span>◫</span>Visão geral</a>
+        <a class="nav-link" href="#operacao"><span>▦</span>Operação Gruta Azul</a>
         <a class="nav-link" href="#mercado"><span>↗</span>Mercado</a>
         <a class="nav-link" href="#bgi"><span>⌁</span>B3 · BGI</a>
         <a class="nav-link" href="#exportacoes"><span>◎</span>Exportações</a>
@@ -48,6 +50,7 @@
         </div>
       </header>
 
+      <p class="ga-warning" style="margin:16px 0 12px"><strong>Mercado:</strong> o índice e a decisão do dia são análises ilustrativas; confira a data da cotação CEPEA e valide o preço atual antes de negociar ou realizar hedge.</p>
       <section class="hero-grid">
         <article class="index-card">
           <div class="index-copy">
@@ -144,6 +147,26 @@
         <div class="risk-box"><strong>Leitura educacional, não ordem de investimento.</strong><span>Derivativos envolvem margem, ajustes diários, liquidez, risco de base e perdas. Valide vencimento, série, prêmio e quantidade com sua corretora.</span></div>
       </section>
 
+      <section class="ga-section" id="operacao" aria-label="Operação Gruta Azul">
+        <div class="section-head"><div><p class="eyebrow">DASHBOI INTELLIGENCE · BASE INTERNA</p><h2>Operação Gruta Azul</h2></div><span class="ga-pill" id="ga-stamp">Base: 03/11/2026</span></div>
+        <div class="ga-warning" id="ga-alert"><strong>Dados históricos e projeções estimadas.</strong> A Distribuição ainda não foi conciliada individualmente com vendas. Estoque físico excluído. Previsão individual de abate não validada.</div>
+        <div class="ga-kpis">
+          <article><small>Rebanho no retrato</small><strong id="ga-herd">—</strong><span>cabeças · 03/11/2026</span></article>
+          <article><small>Pasto</small><strong id="ga-pasture">—</strong><span>Cabeças</span></article>
+          <article><small>Recria</small><strong id="ga-recria">—</strong><span>Cabeças</span></article>
+          <article><small>Engorda</small><strong id="ga-engorda">—</strong><span>Cabeças</span></article>
+        </div>
+        <div class="ga-two"><article class="ga-card"><div class="ga-card-head"><h3>Consumo diário de insumos</h3><span>05/10–03/11/2026</span></div>
+          <div class="ga-metrics"><div><small>Milho</small><strong id="ga-corn-day">—</strong><span id="ga-corn-month">—</span></div><div><small>DDG</small><strong id="ga-ddg-day">—</strong><span id="ga-ddg-month">—</span></div></div>
+          <p class="ga-foot">CONSUMO_DIA × Formulação; valores em matéria original. Gráfico: últimos sete dias disponíveis, milho (verde) e DDG (azul).</p><div id="ga-daily-chart" role="img" aria-label="Consumo diário de milho e DDG"></div></article>
+          <article class="ga-card"><div class="ga-card-head"><h3>Previsão de demanda</h3><span>Simulação</span></div>
+          <div class="ga-controls"><label>Horizonte<select id="ga-horizon"><option value="30">30 dias</option><option value="60">60 dias</option><option value="90">90 dias</option><option value="120" selected>120 dias</option></select></label><label>Variação estimada da demanda<input type="range" id="ga-change" min="-30" max="30" step="5" value="0"><span id="ga-change-label">0%</span></label></div>
+          <div class="ga-metrics"><div><small>Milho</small><strong id="ga-corn">—</strong></div><div><small>DDG</small><strong id="ga-ddg">—</strong></div></div><p class="ga-foot">Consumo bruto projetado a partir da média dos últimos 30 dias. Não representa necessidade líquida de compra.</p><div class="ga-status">Estoque físico: <strong>NÃO VALIDADO</strong></div></article></div>
+        <div class="ga-two"><article class="ga-card"><div class="ga-card-head"><h3>Vendas mensais — 2026</h3><span>Registros de VENDAS</span></div><div id="ga-sales-chart" role="img" aria-label="Vendas mensais em cabeças"></div><p class="ga-foot">Último registro de venda: 20/10/2026; outubro não representa fechamento integral do mês.</p></article>
+          <article class="ga-card"><div class="ga-card-head"><h3>Qualidade das bases</h3><span>06/11/2026</span></div><table class="ga-table"><thead><tr><th>Fonte</th><th>Última data</th></tr></thead><tbody><tr><td>Histórico de consumo</td><td>04/11/2026</td></tr><tr><td>Consumo diário</td><td>03/11/2026</td></tr><tr><td>Distribuição</td><td>03/11/2026</td></tr><tr><td>Desembolsos</td><td>04/11/2026</td></tr><tr><td>Vendas</td><td>20/10/2026</td></tr><tr><td>Pesagens (aba)</td><td>04/03/2026</td></tr></tbody></table><div class="ga-status">Previsão individual de abates: <strong>PENDENTE DE CONCILIAÇÃO</strong></div></article></div>
+        <p class="ga-origin">Fonte: planilha FABRICA21-04-24 fornecida pelo gestor, extração de 06/11/2026. Dados públicos no aplicativo: somente agregados operacionais. Valide a política de confidencialidade antes de publicar.</p>
+      </section>
+
       <section class="data-note" aria-label="Informações sobre os dados">
         <div><span class="live-dot"></span><strong>Dados ao vivo</strong><span>PTAX · Banco Central</span><span>Clima · Open-Meteo</span></div>
         <p>Arroba, milho, escalas, exportações e margem são referências demonstrativas até a conexão das respectivas fontes licenciadas.</p>
@@ -162,5 +185,6 @@
   </dialog>
   <style>.calc-feedback{margin:8px 0 0;text-align:center;color:var(--muted);font-size:11px;min-height:15px;opacity:.55;transition:color .2s,opacity .2s}.calc-feedback.visible{color:var(--green);opacity:1}</style>
   <script src="/app.js"></script>
+  <script src="/intelligence.js"></script>
 </body>
 </html>

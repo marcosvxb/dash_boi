@@ -43,11 +43,11 @@ function setCepeaReference(payload, fromCache = false) {
   const chartChange = document.querySelector("#chart-change");
   if (chartChange) chartChange.className = latest.dayChange?.startsWith("-") ? "negative" : "positive";
   setText("#chart-badge", `${cepeaSeries.length} pregões CEPEA`);
-  setText("#cepea-status", payload.stale ? "CEPEA em snapshot: fonte bloqueou atualização automática no servidor." : fromCache ? "CEPEA em cache" : "CEPEA atualizado");
+  setText("#cepea-status", payload.stale ? "CEPEA SNAPSHOT HISTÓRICO (não é cotação ao vivo): "+latest.date : fromCache ? "CEPEA em cache" : "CEPEA atualizado");
   const spotInput = document.querySelector("#spot-input");
   const referenceInput = document.querySelector("#reference-input");
-  if (spotInput && !localStorage.getItem("dashboi-bgi-user-edited")) spotInput.value = latest.value.toFixed(2);
-  if (referenceInput && !localStorage.getItem("dashboi-bgi-user-edited")) {
+  if (spotInput && !payload.stale && !localStorage.getItem("dashboi-bgi-user-edited")) spotInput.value = latest.value.toFixed(2);
+  if (referenceInput && !payload.stale && !localStorage.getItem("dashboi-bgi-user-edited")) {
     const [day, month, year] = latest.date.split("/");
     referenceInput.value = `${year}-${month}-${day}`;
   }

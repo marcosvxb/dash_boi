@@ -1,30 +1,7 @@
-DASHBOI INTELLIGENCE — PACOTE PARA GITHUB — 06/11/2026
-Repositorio original: marcosvxb/dash_boi
+DASHBOI COMPLETO - 06/11/2026
 
-ARQUIVOS NOVOS (na raiz do repositorio):
-- intelligence.js
-- intelligence.css
-- intelligence-data.json
+Todos os arquivos do projeto estao na raiz do ZIP. Extraia e envie TODOS os arquivos e a pasta api/ ao repositorio GitHub marcosvxb/dash_boi (branch main), substituindo os existentes. Nao envie o ZIP como unico arquivo.
 
-ARQUIVOS EXISTENTES A ALTERAR:
-- index.html
-- sw.js
+Inclui Operacao Gruta Azul, dados agregados, simulador de milho e DDG, cache atualizado, referencia CEPEA 05/11/2026 identificada como SNAPSHOT quando a consulta automatica falhar. Nenhuma cotacao historica deve ser interpretada como valor em tempo real. Contem dados agregados internos; repositorio publico expoe esses numeros.
 
-OPCAO 1: No computador, baixe o repositorio como ZIP, extraia os arquivos, copie todos os arquivos deste pacote para a raiz do repositorio e execute:
-  python aplicar_atualizacao.py
-O script modifica index.html e sw.js sem remover os modulos atuais. Depois carregue index.html, sw.js, intelligence.js, intelligence.css, intelligence-data.json via GitHub > Add file > Upload files. Nao precisa subir o script ou a secao isolada.
-
-OPCAO 2: Se preferir colar direto no editor do GitHub:
-1. Crie intelligence.js, intelligence.css, intelligence-data.json, colando o conteudo dos arquivos.
-2. Em index.html adicione <link rel="stylesheet" href="/intelligence.css"> imediatamente depois do link styles.css.
-3. Em index.html adicione <a class="nav-link" href="#operacao"><span>▦</span>Operação Gruta Azul</a> antes do link Mercado.
-4. Em index.html cole secao_operacao.html logo ANTES de <section class="data-note".
-5. Em index.html adicione <script src="/intelligence.js"></script> logo depois de <script src="/app.js"></script>.
-6. Em sw.js substitua dashboi-v3 por dashboi-v4-20261106 e acrescente "/intelligence.js", "/intelligence.css", "/intelligence-data.json" ao array APP_SHELL.
-7. Salve/Commit changes em main. Se o GitHub estiver integrado, a Vercel publica automaticamente apos o build.
-
-ATENCAO A PRIVACIDADE:
-O repositorio foi identificado como PUBLICO. intelligence-data.json contem somente totais agregados, mas ainda assim dados operacionais da fazenda. Nao faca upload sem autorizacao para expor esses totais. O ideal e configurar o repositorio como privado e proteger o acesso ao painel.
-
-LIMITACOES:
-A aba Estoque nao foi usada. Rebanho eh retrato agregado, nao conciliado individualmente. Previsto de consumo, nao de compras. Previsoes individuais de abate pendentes. Dados estaticos de 06/11/2026 nao atualizam automaticamente com a planilha.
+Nao contem saldo de estoque atual, previsao individual de abate conciliada nem integracao automatica do Excel. O total de rebanho e retrato agregado datado.

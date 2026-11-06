@@ -1,5 +1,5 @@
-const CACHE = "dashboi-v3";
-const APP_SHELL = ["/", "/index.html", "/styles.css", "/app.js", "/manifest.json", "/icon.svg"];
+const CACHE = "dashboi-v5-20261106";
+const APP_SHELL = ["/", "/index.html", "/styles.css", "/app.js", "/intelligence.js", "/intelligence.css", "/intelligence-data.json", "/manifest.json", "/icon.svg"];
 self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)));
