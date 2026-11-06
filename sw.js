@@ -1,4 +1,4 @@
-const CACHE = "dashboi-v7-20261106-cepea";
+const CACHE = "dashboi-v8-20261106-bgi";
 const APP_SHELL = ["/", "/index.html", "/styles.css", "/app.js", "/intelligence.js", "/intelligence.css", "/intelligence-data.json", "/manifest.json", "/icon.svg"];
 self.addEventListener("install", event => {
   self.skipWaiting();
