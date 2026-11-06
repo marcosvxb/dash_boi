@@ -115,28 +115,30 @@
       </section>
 
       <section class="bgi-section" id="bgi">
-        <div class="section-head"><div><p class="eyebrow">GESTÃO DE RISCO · B3</p><h2>Futuro de Boi Gordo — BGI</h2></div><span class="feed-status"><span class="feed-dot"></span>Feed B3 pendente</span></div>
+        <div class="section-head"><div><p class="eyebrow">GESTÃO DE RISCO · B3</p><h2>Futuro de Boi Gordo — BGI</h2></div><span class="feed-status" id="bgi-feed-status"><span class="feed-dot"></span>Consultando fechamento B3…</span></div>
         <div class="bgi-grid">
           <article class="panel bgi-market">
-            <div class="panel-head"><div><p class="eyebrow">CONTRATO E TENDÊNCIA</p><h2 id="bgi-contract">BGIN26 · referência 03/07/2026</h2></div><span class="badge amber">Referência manual</span></div>
-            <div class="bgi-quote"><div><small>Preço do contrato</small><strong id="bgi-current-label">R$ 327,85</strong></div><div><small>Variação</small><strong id="bgi-change" class="positive">+0,08%</strong></div></div>
+            <div class="panel-head"><div><p class="eyebrow">CONTRATO E TENDÊNCIA</p><h2 id="bgi-contract">Cotação B3 por vencimento</h2></div><span class="badge amber" id="bgi-data-mode">Carregando fonte B3</span></div>
+            <div class="bgi-quote"><div><small>Preço do contrato</small><strong id="bgi-current-label">Aguardando…</strong></div><div><small>Variação</small><strong id="bgi-change" class="neutral">—</strong></div></div>
             <div class="trend-meter"><span id="bgi-meter"></span></div>
             <div class="trend-copy"><strong id="bgi-trend">Tendência altista moderada</strong><p id="bgi-trend-text">O futuro está acima do ajuste anterior e do preço físico informado.</p></div>
-            <p class="source-warning" id="market-reference">Referência manual: CEPEA/B3 físico de R$ 329,85/@ e BGIN26 de R$ 327,85/@ em 03/07/2026. Confirme os valores antes de negociar.</p>
+            <p class="source-warning" id="market-reference">Dados B3: fechamento por mês de vencimento, sujeito a atraso e à disponibilidade da fonte. <a href="https://www.noticiasagricolas.com.br/cotacoes/boi-gordo/boi-gordo-b3-prego-regular" target="_blank" rel="noopener noreferrer">Conferir fonte B3</a>.</p>
           </article>
           <article class="panel hedge-form">
             <div class="panel-head"><div><p class="eyebrow">PREMISSAS</p><h2>Simulador de proteção</h2></div><span class="info">i</span></div>
             <div class="input-grid">
-              <label>Contrato selecionado<input id="contract-input" type="text" value="BGIN26"></label>
-              <label>Data da referência<input id="reference-input" type="date" value="2026-07-03"></label>
-              <label>CEPEA/B3 físico R$/@<input id="spot-input" type="number" step="0.01" value="329.85"></label>
-              <label>Contrato BGI R$/@<input id="future-input" type="number" step="0.01" value="327.85"></label>
-              <label>Ajuste anterior BGI R$/@<input id="previous-input" type="number" step="0.01" value="327.59"></label>
+              <label>Contrato selecionado<select id="contract-input"><option value="BGIX26">BGIX26 · Novembro/2026</option><option value="BGIZ26">BGIZ26 · Dezembro/2026</option><option value="BGIF27">BGIF27 · Janeiro/2027</option><option value="BGIG27">BGIG27 · Fevereiro/2027</option><option value="BGIH27">BGIH27 · Março/2027</option></select></label>
+              <label>Data da referência<input id="reference-input" type="date" value="2026-11-05"></label>
+              <label>CEPEA físico SP R$/@<input id="spot-input" type="number" step="0.01" value="391.35"></label>
+              <label>Contrato BGI R$/@<input id="future-input" type="number" step="0.01" placeholder="Carregando…" value=""></label>
+              <label>Fechamento anterior BGI R$/@<input id="previous-input" type="number" step="0.01" placeholder="Carregando…" value=""></label>
               <label>Cabeças previstas<input id="heads-input" type="number" step="1" value="660"></label>
               <label>Arrobas por cabeça<input id="arrobas-input" type="number" step="0.1" value="20"></label>
               <label>Custo-alvo R$/@<input id="cost-input" type="number" step="0.01" value="292.00"></label>
             </div>
             <button class="calc-btn" id="bgi-calc" type="button">Recalcular cenários</button>
+            <button class="calc-btn" id="bgi-refresh" type="button" style="margin-top:8px;background:#173d2c;border:1px solid #2b694c;color:#a9f5cb;">Atualizar cotações B3</button>
+            <p class="source-warning" id="bgi-source-note">B3 por vencimento: valores do último fechamento publicado, não cotação em tempo real.</p>
             <p class="calc-feedback" id="bgi-feedback" aria-live="polite">Cenários atualizados automaticamente.</p>
           </article>
         </div>
