@@ -10,3 +10,20 @@ el('ga-horizon').addEventListener('change',forecast);el('ga-change').addEventLis
 }catch(err){el('ga-alert').textContent='Falha na leitura de dados internos: '+err.message;el('ga-alert').style.display='block';}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
+(()=>{'use strict';
+const get=id=>document.getElementById(id),pt=(n,d=0)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+async function audit(){if(!get('ga-stock-rows'))return;try{
+ const r=await fetch('/intelligence-data.json',{cache:'no-store'});if(!r.ok)throw Error('Dados indisponiveis');
+ const d=await r.json(),st=d.stock_reconciliation,sl=d.slaughter_projections;
+ const corn=st.items.find(i=>i[0]==='MILHO GRAO'),ddg=st.items.find(i=>i[0]==='DDG 30%');
+ get('ga-stock-corn').textContent=pt(corn[4]/1000,1)+' t';
+ get('ga-stock-ddg').textContent=pt(ddg[4]/1000,1)+' t';
+ get('ga-slaughter-120').textContent=pt(sl.horizons.find(x=>x.days===120).engorda);
+ get('ga-recent-animals').textContent=pt(sl.recent_weight_upto120d);
+ const max=Math.max(...sl.horizons.map(x=>x.engorda));
+ get('ga-slaughter-chart').innerHTML=sl.horizons.map(x=>'<div class="ga-sale"><span>'+x.days+'d</span><div><b style="width:'+Math.round(100*x.engorda/max)+'%"></b></div><strong>'+pt(x.engorda)+'</strong></div>').join('');
+ get('ga-stock-rows').innerHTML=st.items.map(i=>'<tr><td>'+i[0]+'</td><td>'+pt(i[1]+i[2])+'</td><td>'+pt(i[3])+'</td><td class="'+(i[4]<0?'ga-neg':'')+'">'+pt(i[4])+'</td></tr>').join('');
+ }catch(e){get('ga-stock-rows').innerHTML='<tr><td colspan="4">Falha ao carregar dados: '+e.message+'</td></tr>';}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',audit);else audit();
+})();

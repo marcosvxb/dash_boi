@@ -1,7 +1,7 @@
 const state = {
   index: 72,
   kpis: [
-    { label: "CEPEA/B3 SP · 03/07", value: "R$ 329,85", change: "-0,87%", tone: "negative", icon: "↘", spark: [338.65,336.40,335.30,332.75,329.85] },
+    { label: "CEPEA SP · 05/11 (referência)", value: "R$ 391,35", change: "+0,13%", tone: "negative", icon: "↘", spark: [389.20,389.90,390.00,390.85,391.35] },
     { label: "Dólar PTAX", value: "R$ 5,42", change: "+0,4%", tone: "positive", icon: "$", spark: [51,49,52,50,55,56,54,58], dynamic: true },
     { label: "Milho / saca", value: "R$ 67,80", change: "+2,1%", tone: "negative", icon: "◇", spark: [45,46,51,54,58,57,63,67] },
     { label: "Escala média", value: "7,2 dias", change: "-0,8 dia", tone: "positive", icon: "◷", spark: [74,72,68,67,63,59,57,52] }

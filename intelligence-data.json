@@ -107,5 +107,213 @@
     "Estoque físico não validado",
     "Previsão individual de abate pendente de conciliação",
     "Projeções de consumo mantêm dieta e lotação constantes"
-  ]
+  ],
+  "stock_reconciliation": {
+    "as_of": "2026-11-04",
+    "opening_date": "2023-06-30",
+    "status": "SALDO_TEÓRICO_NAO_CONFERIDO",
+    "method": "Saldo inicial nas linhas Estoque anterior de Desembolsos + entradas posteriores em Desembolsos (Destino=INSUMOS NUTRICIONAIS, produto F, quantidade G) - saidas acumuladas da aba Insumos nutricionais (coluna C). Nao utiliza a aba Estoque.",
+    "items": [
+      [
+        "MILHO GRAO",
+        600000,
+        22551894.8,
+        21856191.62,
+        1295703.18
+      ],
+      [
+        "DDG 30%",
+        46740,
+        10520997,
+        10729384.47,
+        -161647.47
+      ],
+      [
+        "CASCA DE SOJA",
+        0,
+        1202150,
+        1032280.33,
+        169869.67
+      ],
+      [
+        "FARELO DE SOJA",
+        24350,
+        1126440,
+        1067444.66,
+        83345.34
+      ],
+      [
+        "CARBONATO DE CALCIO",
+        0,
+        648780,
+        760409.73,
+        -111629.73
+      ],
+      [
+        "TORTA DE ALGODAO",
+        0,
+        3765860,
+        3766548.17,
+        -688.17
+      ],
+      [
+        "NUCLEO MINERAL 0,3%",
+        0,
+        264120,
+        419474.42,
+        -155354.42
+      ],
+      [
+        "SAL GRANULADO (TORRADO)",
+        0,
+        264200,
+        236395.72,
+        27804.28
+      ],
+      [
+        "FENO",
+        250000,
+        3351,
+        266094.1,
+        -12743.1
+      ],
+      [
+        "FARELO DE ALGODAO",
+        0,
+        460250,
+        430798.14,
+        29451.86
+      ],
+      [
+        "SILAGEM DE CAPIACU",
+        902352,
+        0,
+        2123922.92,
+        -1221570.92
+      ],
+      [
+        "SILAGEM DE MILHETO",
+        7297686,
+        0,
+        8311578.07,
+        -1013892.07
+      ],
+      [
+        "SILAGEM DE MILHO",
+        1512010,
+        0,
+        1995761.77,
+        -483751.77
+      ],
+      [
+        "SOJA GRAO",
+        540000,
+        0,
+        455743.68,
+        84256.32
+      ],
+      [
+        "UREIA ( RACAO )",
+        37000,
+        245500,
+        374830.16,
+        -92330.16
+      ],
+      [
+        "LOTHAR PO SACO KG",
+        0,
+        102000,
+        187366.41,
+        -85366.41
+      ],
+      [
+        "NUCLEO MINERAL 0,1%",
+        0,
+        87510,
+        171540,
+        -84030
+      ],
+      [
+        "NUCLEO CONFINAMENTO",
+        0,
+        72030,
+        69967.67,
+        2062.33
+      ],
+      [
+        "A-BIND",
+        0,
+        65000,
+        62893.05,
+        2106.95
+      ],
+      [
+        "SAFWALL CH",
+        0,
+        19125,
+        18502.76,
+        622.24
+      ]
+    ],
+    "corn_source_discrepancy_kg": 600000,
+    "observations": [
+      "Milho inclui saldo inicial 600.000kg no inventario anterior, ausente na soma da aba Insumos nutricionais.",
+      "DDG apresenta saldo teorico negativo: precisam ser conferidas entradas/ajustes nao contabilizados.",
+      "Silagens podem ter producao interna nao registrada em Desembolsos.",
+      "Estoque fisico exige contagem ou medicao em campo; estes saldos nao sao garantidos."
+    ]
+  },
+  "slaughter_projections": {
+    "as_of": "2026-11-03",
+    "source": "MOVIMENTACOES, VENDAS e ultima pesagem positiva; corte por data de Distribuicao",
+    "confidence": "PROVISORIA_NAO_CONCILIADA",
+    "valid_movements": 194762,
+    "unique_identifiers": 35045,
+    "unique_sold_vendas": 22523,
+    "animals_with_weight_candidates": 10845,
+    "recent_weight_upto120d": 9059,
+    "outdated_weight_excluded": 1786,
+    "distribution_heads": 10944,
+    "distribution_engorda": 1433,
+    "predicted_recent_engorda_candidates": 1686,
+    "horizons": [
+      {
+        "days": 30,
+        "engorda": 873,
+        "recria_weight_goal": 8,
+        "pasto_weight_goal": 240
+      },
+      {
+        "days": 60,
+        "engorda": 1281,
+        "recria_weight_goal": 8,
+        "pasto_weight_goal": 288
+      },
+      {
+        "days": 90,
+        "engorda": 1593,
+        "recria_weight_goal": 11,
+        "pasto_weight_goal": 332
+      },
+      {
+        "days": 120,
+        "engorda": 1673,
+        "recria_weight_goal": 79,
+        "pasto_weight_goal": 374
+      }
+    ],
+    "rules": {
+      "target_male_kg": 560,
+      "target_female_kg": 500,
+      "gmd_pasto": 0.6,
+      "gmd_recria": 1.0,
+      "gmd_engorda": 1.4
+    },
+    "observations": [
+      "Atingir peso alvo em pasto ou recria nao significa abate imediato; fases devem ser respeitadas.",
+      "Previsao de engorda supera rebanho de engorda registrado na Distribuicao; exige reconciliacao por animal.",
+      "GMD futuro usa referencia operacional e peso projetado a partir da ultima pesagem, nao ganho observado garantido.",
+      "Nenhum identificador individual e publicado neste JSON."
+    ]
+  }
 }

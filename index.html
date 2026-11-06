@@ -23,6 +23,7 @@
       <nav aria-label="Navegação principal">
         <a class="nav-link active" href="#inicio"><span>◫</span>Visão geral</a>
         <a class="nav-link" href="#operacao"><span>▦</span>Operação Gruta Azul</a>
+        <a class="nav-link" href="#reconciliacao"><span>◈</span>Estoque e Abates</a>
         <a class="nav-link" href="#mercado"><span>↗</span>Mercado</a>
         <a class="nav-link" href="#bgi"><span>⌁</span>B3 · BGI</a>
         <a class="nav-link" href="#exportacoes"><span>◎</span>Exportações</a>
@@ -166,6 +167,22 @@
           <article class="ga-card"><div class="ga-card-head"><h3>Qualidade das bases</h3><span>06/11/2026</span></div><table class="ga-table"><thead><tr><th>Fonte</th><th>Última data</th></tr></thead><tbody><tr><td>Histórico de consumo</td><td>04/11/2026</td></tr><tr><td>Consumo diário</td><td>03/11/2026</td></tr><tr><td>Distribuição</td><td>03/11/2026</td></tr><tr><td>Desembolsos</td><td>04/11/2026</td></tr><tr><td>Vendas</td><td>20/10/2026</td></tr><tr><td>Pesagens (aba)</td><td>04/03/2026</td></tr></tbody></table><div class="ga-status">Previsão individual de abates: <strong>PENDENTE DE CONCILIAÇÃO</strong></div></article></div>
         <p class="ga-origin">Fonte: planilha FABRICA21-04-24 fornecida pelo gestor, extração de 06/11/2026. Dados públicos no aplicativo: somente agregados operacionais. Valide a política de confidencialidade antes de publicar.</p>
       </section>
+
+<section class="ga-section" id="reconciliacao" aria-label="Estoques e previsões">
+  <div class="section-head"><div><p class="eyebrow">DASHBOI INTELLIGENCE · AUDITORIA OPERACIONAL</p><h2>Estoque por entradas e previsão de abates</h2></div><span class="ga-pill">Corte 03–04/11/2026</span></div>
+  <div class="ga-warning"><strong>Não são saldos físicos auditados.</strong> Entradas de Desembolsos e saídas acumuladas das fórmulas apresentam divergências. A previsão de abates também é provisória até conciliar a Distribuição com o histórico individual.</div>
+  <div class="ga-kpis">
+    <article><small>Milho · saldo teórico</small><strong id="ga-stock-corn">—</strong><span>Inclui saldo inicial de 600 t</span></article>
+    <article><small>DDG · divergência</small><strong id="ga-stock-ddg">—</strong><span>Saldo negativo requer revisão</span></article>
+    <article><small>Engorda prevista · 120 dias</small><strong id="ga-slaughter-120">—</strong><span>Candidatos; não abates confirmados</span></article>
+    <article><small>Pesos recentes</small><strong id="ga-recent-animals">—</strong><span>Animais com pesagem até 120 dias</span></article>
+  </div>
+  <div class="ga-two">
+    <article class="ga-card"><div class="ga-card-head"><h3>Previsão por horizonte</h3><span>Somente candidatos em ENGORDA</span></div><div id="ga-slaughter-chart"></div><p class="ga-foot">A fase ENGORDA possui 1.433 cabeças na Distribuição, mas a projeção individual identifica 1.686 candidatos com peso recente. Conferir a divergência antes de programar embarques.</p></article>
+    <article class="ga-card"><div class="ga-card-head"><h3>Reconciliação dos insumos</h3><span>Quilogramas · saldo acumulado</span></div><div class="ga-stock-scroll"><table class="ga-table"><thead><tr><th>Insumo</th><th>Entradas</th><th>Consumo</th><th>Saldo teórico</th></tr></thead><tbody id="ga-stock-rows"></tbody></table></div><p class="ga-foot">Saldos negativos indicam movimentações faltantes ou outras diferenças de inventário; não representam estoque físico negativo.</p></article>
+  </div>
+  <p class="ga-origin">Dados consolidados da planilha FABRICA21-04-24. Consulte o relatório de auditoria para rastrear saldos e projeções individuais. Esta página pública exibe apenas indicadores agregados.</p>
+</section>
 
       <section class="data-note" aria-label="Informações sobre os dados">
         <div><span class="live-dot"></span><strong>Dados ao vivo</strong><span>PTAX · Banco Central</span><span>Clima · Open-Meteo</span></div>
