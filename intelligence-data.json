@@ -1,0 +1,111 @@
+{
+  "source": "FABRICA21-04-24 (snapshot)",
+  "updated_at": "2026-11-06",
+  "distribution": {
+    "date": "2026-11-03",
+    "heads": 10944,
+    "pasture": 6759,
+    "recria": 2752,
+    "engorda": 1433,
+    "status": "aggregate_unreconciled"
+  },
+  "consumption_30d": {
+    "from": "2026-10-05",
+    "to": "2026-11-03",
+    "corn_kg": 393616.391,
+    "ddg_kg": 390726.232,
+    "covered_days": 30,
+    "formula_coverage_pct": 100
+  },
+  "consumption_daily_last7": [
+    {
+      "date": "2026-10-28",
+      "corn_kg": 12500.96,
+      "ddg_kg": 12410.93
+    },
+    {
+      "date": "2026-10-29",
+      "corn_kg": 12315.48,
+      "ddg_kg": 12232.37
+    },
+    {
+      "date": "2026-10-30",
+      "corn_kg": 12668.19,
+      "ddg_kg": 12495.31
+    },
+    {
+      "date": "2026-10-31",
+      "corn_kg": 12757.11,
+      "ddg_kg": 12586.13
+    },
+    {
+      "date": "2026-11-01",
+      "corn_kg": 12533.17,
+      "ddg_kg": 12496.39
+    },
+    {
+      "date": "2026-11-02",
+      "corn_kg": 12401.39,
+      "ddg_kg": 12371.63
+    },
+    {
+      "date": "2026-11-03",
+      "corn_kg": 12669.56,
+      "ddg_kg": 12654.61
+    }
+  ],
+  "sales_2026": [
+    {
+      "month": "2026-01",
+      "heads": 538
+    },
+    {
+      "month": "2026-02",
+      "heads": 643
+    },
+    {
+      "month": "2026-03",
+      "heads": 546
+    },
+    {
+      "month": "2026-04",
+      "heads": 997
+    },
+    {
+      "month": "2026-05",
+      "heads": 1033
+    },
+    {
+      "month": "2026-06",
+      "heads": 854
+    },
+    {
+      "month": "2026-07",
+      "heads": 1089
+    },
+    {
+      "month": "2026-08",
+      "heads": 1221
+    },
+    {
+      "month": "2026-09",
+      "heads": 724
+    },
+    {
+      "month": "2026-10",
+      "heads": 816
+    }
+  ],
+  "last_dates": {
+    "consumption": "2026-11-03",
+    "distribution": "2026-11-03",
+    "sales": "2026-10-20",
+    "financial": "2026-11-04",
+    "pesagens": "2026-03-04"
+  },
+  "limitations": [
+    "Estoque físico não validado",
+    "Previsão individual de abate pendente de conciliação",
+    "Projeções de consumo mantêm dieta e lotação constantes"
+  ]
+}
