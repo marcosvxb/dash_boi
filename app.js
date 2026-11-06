@@ -18,6 +18,7 @@ const state = {
 const $ = selector => document.querySelector(selector);
 const formatDate = date => new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" }).format(date);
 let cepeaSeries = [389.20, 389.90, 390.00, 390.85, 391.35];
+let spotEditedThisSession = false;
 
 function setText(selector, value) {
   const element = document.querySelector(selector);
@@ -46,11 +47,8 @@ function setCepeaReference(payload, fromCache = false) {
   setText("#cepea-status", payload.stale || fromCache ? "CEPEA HISTÓRICO (não é cotação ao vivo): " + latest.date : "CEPEA/ESALQ atualizado: " + latest.date + " (" + payload.source + ")");
   const spotInput = document.querySelector("#spot-input");
   const referenceInput = document.querySelector("#reference-input");
-  if (spotInput && !payload.stale && !localStorage.getItem("dashboi-bgi-user-edited")) spotInput.value = latest.value.toFixed(2);
-  if (referenceInput && !payload.stale && !localStorage.getItem("dashboi-bgi-user-edited")) {
-    const [day, month, year] = latest.date.split("/");
-    referenceInput.value = `${year}-${month}-${day}`;
-  }
+  if (spotInput && !payload.stale && !spotEditedThisSession) spotInput.value = latest.value.toFixed(2);
+  // A data BGI pertence ao fechamento do contrato futuro, não ao indicador CEPEA físico.
   calculateBgi();
 }
 
@@ -283,14 +281,14 @@ function restoreBgi() {
   const saved = JSON.parse(localStorage.getItem("dashboi-bgi") || "null");
   if (!saved || saved.version !== 2) return;
   const ids = {contract:"#contract-input",reference:"#reference-input",spot:"#spot-input",future:"#future-input",previous:"#previous-input",heads:"#heads-input",arrobas:"#arrobas-input",cost:"#cost-input",putStrike:"#put-strike",putPremium:"#put-premium",callStrike:"#call-strike",callPremium:"#call-premium"};
-  Object.entries(ids).forEach(([key,id]) => { if (saved[key] != null) document.querySelector(id).value = saved[key]; });
+  Object.entries(ids).forEach(([key,id]) => { if (["future","previous","reference","spot"].includes(key)) return; if (saved[key] != null) document.querySelector(id).value = saved[key]; });
 }
 
 function init() {
   $("#today").textContent = formatDate(new Date()).replace(/^./,c=>c.toUpperCase()) + " · Visão executiva do mercado";
   $("#gauge").style.setProperty("--score",state.index); $("#gauge strong").textContent=state.index;
   renderKpis(); renderDrivers(); renderBars(); drawChart(); restoreBgi(); calculateBgi(); Promise.allSettled([loadCepea(), loadDollar(), loadWeather(), loadBgi()]);
-  $("#updated-at").textContent=`Auto: PTAX, clima e CEPEA · BGI manual · ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
+  $("#updated-at").textContent=`Auto: PTAX, clima, CEPEA e fechamento B3 · ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
 }
 
 $("#theme-btn").addEventListener("click",()=>{document.body.classList.toggle("light");localStorage.setItem("dashboi-theme",document.body.classList.contains("light")?"light":"dark");drawChart();});
@@ -308,6 +306,7 @@ document.querySelector("#bgi-refresh").addEventListener("click", loadBgi);
 document.querySelectorAll(bgiInputs).forEach(input => {
   input.addEventListener("input", () => {
     localStorage.setItem("dashboi-bgi-user-edited", "1");
+    if (input.id === "spot-input") spotEditedThisSession = true;
     if (["future-input","previous-input"].includes(input.id)) {
       bgiQuoteEditedManually = true; bgiStatus("B3 · cotação alterada manualmente", "manual");
     }
