@@ -1,21 +1,22 @@
 const https = require("https");
 
 const CEPEA_URL = "https://www.cepea.org.br/br/indicador/boi-gordo.aspx";
+const BACKUP_URL = "https://www.noticiasagricolas.com.br/cotacoes/boi-gordo/boi-gordo-indicador-esalq-bmf";
 const FALLBACK = {
   source: "CEPEA/ESALQ",
   sourceUrl: CEPEA_URL,
   license: "CEPEA CC BY-NC 4.0",
   stale: true,
   fallbackReason: "Fonte CEPEA bloqueou a consulta automática no servidor",
-  fetchedAt: "2026-07-18T00:00:00.000Z",
+  fetchedAt: "2026-11-05T00:00:00.000Z",
   latest: {
-    date: "15/07/2026",
-    value: 329.20,
-    dayChange: "+0,34%",
-    monthChange: "n/d",
-    usd: null
+    date: "05/11/2026",
+    value: 391.35,
+    dayChange: "+0,13%",
+    monthChange: "+0,37%",
+    usd: 71.26
   },
-  series: [332.75, 329.85, 328.1, 328.08, 329.2]
+  series: [389.20, 389.90, 390.00, 390.85, 391.35]
 };
 
 function fetchText(url) {
@@ -73,6 +74,7 @@ function parseCepea(html) {
     }));
 
   if (!rows.length) throw new Error("Tabela CEPEA não encontrada");
+  validateDate(rows[0].date);
 
   return {
     source: "CEPEA/ESALQ",
@@ -84,16 +86,48 @@ function parseCepea(html) {
   };
 }
 
+
+function validateDate(brDate) {
+  const [d, m, y] = brDate.split("/").map(Number);
+  if (!d || !m || !y) throw new Error("Data de cotação inválida");
+  const ageDays = (Date.now() - Date.UTC(y, m - 1, d)) / 86400000;
+  if (ageDays < -1 || ageDays > 7) throw new Error("Fonte sem cotação dos últimos 7 dias");
+}
+
+function parseBackup(html) {
+  const matches = [...html.matchAll(/<tr[^>]*>\s*<td[^>]*>\s*(\d{2}\/\d{2}\/\d{4})\s*<\/td>\s*<td[^>]*>\s*(\d{2,3},\d{2})\s*<\/td>\s*<td[^>]*>\s*([+-]?\d+,\d+)\s*<\/td>/gi)];
+  const rows = matches.slice(0, 5).map(m => ({
+    date: m[1], value: toNumber(m[2]), dayChange: m[3] + "%", monthChange: "n/d", usd: null
+  }));
+  if (!rows.length) throw new Error("Indicador CEPEA indisponível na fonte secundária");
+  validateDate(rows[0].date);
+  return {
+    source: "CEPEA/ESALQ via Notícias Agrícolas",
+    sourceUrl: BACKUP_URL,
+    originalSourceUrl: CEPEA_URL,
+    license: "CEPEA CC BY-NC 4.0",
+    stale: false,
+    fetchedAt: new Date().toISOString(),
+    latest: rows[0],
+    series: rows.map(r => r.value).reverse()
+  };
+}
+
 module.exports = async function handler(req, res) {
   try {
-    res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=3600");
     const html = await fetchText(CEPEA_URL);
     res.status(200).json(parseCepea(html));
   } catch (error) {
-    res.status(200).json({
-      ...FALLBACK,
-      fetchedAt: new Date().toISOString(),
-      detail: error.message
-    });
+    try {
+      const html = await fetchText(BACKUP_URL);
+      res.status(200).json(parseBackup(html));
+    } catch (secondaryError) {
+      res.status(200).json({
+        ...FALLBACK,
+        checkedAt: new Date().toISOString(),
+        detail: "CEPEA: " + error.message + "; Notícias Agrícolas: " + secondaryError.message
+      });
+    }
   }
 };
