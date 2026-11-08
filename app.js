@@ -106,11 +106,13 @@ async function loadDollar() {
       state.kpis[1].value = quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
       localStorage.setItem("dashboi-ptax", JSON.stringify({ quote, at: Date.now() }));
       renderKpis(); $("#sync-label").textContent="PTAX e clima atualizados";
+      return true;
     }
   } catch {
     const cached = JSON.parse(localStorage.getItem("dashboi-ptax") || "null");
     if (cached?.quote) { state.kpis[1].value = cached.quote.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); renderKpis(); }
     $("#sync-label").textContent="Últimos dados disponíveis";
+    return false;
   }
 }
 
@@ -121,6 +123,7 @@ async function loadCepea() {
     const payload = await response.json();
     localStorage.setItem("dashboi-cepea", JSON.stringify(payload));
     setCepeaReference(payload);
+    return !payload.stale;
   } catch {
     const cached = JSON.parse(localStorage.getItem("dashboi-cepea") || "null");
     if (cached?.latest?.date) {
@@ -128,10 +131,11 @@ async function loadCepea() {
       const ageDays = (Date.now() - Date.UTC(y,m-1,d)) / 86400000;
       if (ageDays >= -1 && ageDays <= 7) {
         setCepeaReference({ ...cached, stale: true }, true);
-        return;
+        return false;
       }
     }
     setText("#cepea-status", "CEPEA: atualização indisponível; referência histórica de 05/11/2026.");
+    return false;
   }
 }
 
@@ -144,7 +148,8 @@ async function loadWeather() {
     const data = await response.json();
     const weather = { temp: Math.round(data.current.temperature_2m), humidity: Math.round(data.current.relative_humidity_2m), code: data.current.weather_code, rain: Math.round(data.daily.precipitation_sum.reduce((sum,value)=>sum+(value||0),0)), at: Date.now() };
     localStorage.setItem("dashboi-weather", JSON.stringify(weather)); renderWeather(weather);
-  } catch { const cached = JSON.parse(localStorage.getItem("dashboi-weather") || "null"); if (cached) renderWeather(cached); else $("#weather-label").textContent="Clima indisponível"; }
+    return true;
+  } catch { const cached = JSON.parse(localStorage.getItem("dashboi-weather") || "null"); if (cached) renderWeather(cached); else $("#weather-label").textContent="Clima indisponível"; return false; }
 }
 
 function renderWeather(weather) {
@@ -211,6 +216,7 @@ async function loadBgi() {
     const date = payload.date;
     document.querySelector("#bgi-source-note").textContent =
       "Fonte: B3 via Notícias Agrícolas · fechamento de "+date+" · atualização automática a cada abertura do painel. Cotação de fechamento, não é tempo real.";
+    return true;
   } catch (error) {
     bgiFeedData = null;
     bgiStatus("B3 indisponível · conferência manual necessária", "manual");
@@ -321,4 +327,50 @@ let installPrompt;
 window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; $("#install-btn").hidden = false; });
 $("#install-btn").addEventListener("click", async () => { if (!installPrompt) return; installPrompt.prompt(); await installPrompt.userChoice; installPrompt = null; $("#install-btn").hidden = true; });
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));
+
+let dashboiRefreshBusy = false;
+async function refreshEverything() {
+  if (dashboiRefreshBusy) return;
+  dashboiRefreshBusy = true;
+  const btn = document.querySelector("#refresh-all-btn");
+  const note = document.querySelector("#refresh-all-detail");
+  btn.disabled = true;
+  btn.textContent = "⟳ Atualizando…";
+  note.dataset.state = "";
+  note.textContent = "Consultando CEPEA, B3, dólar, clima e indicadores internos…";
+  const sources = [
+    ["CEPEA", loadCepea()],
+    ["B3/BGI", loadBgi()],
+    ["Dólar/PTAX", loadDollar()],
+    ["Clima", loadWeather()],
+    ["Operação", typeof window.DashBoiRefreshOperations === "function" ? window.DashBoiRefreshOperations() : Promise.resolve(false)],
+    ["Estoque/Abates", typeof window.DashBoiRefreshAudit === "function" ? window.DashBoiRefreshAudit() : Promise.resolve(false)]
+  ];
+  try {
+    const results = await Promise.allSettled(sources.map(x => x[1]));
+    const ok = [], failed = [];
+    results.forEach((r,i) => {
+      if (r.status === "fulfilled" && r.value === true) ok.push(sources[i][0]);
+      else failed.push(sources[i][0]);
+    });
+    if ("serviceWorker" in navigator) {
+      try { const reg = await navigator.serviceWorker.getRegistration(); if (reg) await reg.update(); }
+      catch (err) { failed.push("Versão do aplicativo"); }
+    }
+    note.dataset.state = failed.length ? "error" : "ok";
+    const baseDate = window.DashBoiInternalBaseDate || "data não informada";
+    note.textContent = "Reconsultados: " + (ok.join(", ") || "nenhum") +
+      ". " + (failed.length ? "Sem confirmação de atualização: " + failed.join(", ") + ". " : "") +
+      "Base Excel publicada: " + baseDate +
+      ". Novas movimentações exigem a sincronização do Excel no Windows.";
+    document.querySelector("#updated-at").textContent =
+      "Última tentativa: " + new Date().toLocaleString("pt-BR") + " · verifique datas de cada fonte";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "⟳ Atualizar tudo";
+    dashboiRefreshBusy = false;
+  }
+}
+document.querySelector("#refresh-all-btn").addEventListener("click", refreshEverything);
+
 init();
