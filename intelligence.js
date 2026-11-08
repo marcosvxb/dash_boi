@@ -2,18 +2,18 @@
 const el=id=>document.getElementById(id);const fmt=(v,n=1)=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:n,maximumFractionDigits:n});
 const fmtDate=s=>s.substring(8,10)+'/'+s.substring(5,7);
 function barChart(data,target,kind){const max=Math.max(1,...data.map(x=>kind==='sales'?x.heads:Math.max(x.corn_kg,x.ddg_kg)));el(target).innerHTML=kind==='sales'?data.map(x=>`<div class="ga-sale"><span>${x.month.substring(5)}</span><div><b style="width:${Math.round(100*x.heads/max)}%"></b></div><strong>${x.heads.toLocaleString('pt-BR')}</strong></div>`).join(''):`<div class="ga-bars">${data.map(x=>`<div class="ga-day"><div class="ga-columns"><b style="height:${Math.round(110*x.corn_kg/max)}px"></b><b style="height:${Math.round(110*x.ddg_kg/max)}px"></b></div><small>${fmtDate(x.date)}</small></div>`).join('')}</div>`}
-async function start(){if(!el('ga-horizon'))return;try{const res=await fetch('/intelligence-data.json',{cache:'no-cache'});if(!res.ok)throw Error('Dados não disponíveis');const data=await res.json();const distribution=data.distribution,cons=data.consumption_30d;
+async function start(){if(!el('ga-horizon'))return;try{const res=await fetch('/intelligence-data.json?refresh='+Date.now(),{cache:'no-store'});if(!res.ok)throw Error('Dados não disponíveis');const data=await res.json();const distribution=data.distribution,cons=data.consumption_30d;
 el('ga-herd').textContent=distribution.heads.toLocaleString('pt-BR');el('ga-pasture').textContent=distribution.pasture.toLocaleString('pt-BR');el('ga-recria').textContent=distribution.recria.toLocaleString('pt-BR');el('ga-engorda').textContent=distribution.engorda.toLocaleString('pt-BR');
 el('ga-corn-day').textContent=fmt(cons.corn_kg/30000,2)+' t';el('ga-ddg-day').textContent=fmt(cons.ddg_kg/30000,2)+' t';el('ga-corn-month').textContent=fmt(cons.corn_kg/1000,2)+' t em 30 dias';el('ga-ddg-month').textContent=fmt(cons.ddg_kg/1000,2)+' t em 30 dias';
 function forecast(){const days=Number(el('ga-horizon').value),pct=Number(el('ga-change').value),f=days/30*(1+pct/100);el('ga-change-label').textContent=(pct>0?'+':'')+pct+'%';el('ga-corn').textContent=fmt(cons.corn_kg*f/1000)+' t';el('ga-ddg').textContent=fmt(cons.ddg_kg*f/1000)+' t'}
-el('ga-horizon').addEventListener('change',forecast);el('ga-change').addEventListener('input',forecast);forecast();barChart(data.consumption_daily_last7,'ga-daily-chart','daily');barChart(data.sales_2026,'ga-sales-chart','sales');el('ga-stamp').textContent='Base da distribuição: '+fmtDate(distribution.date)+'/2026';
-}catch(err){el('ga-alert').textContent='Falha na leitura de dados internos: '+err.message;el('ga-alert').style.display='block';}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+if(!el('ga-horizon').dataset.bound){el('ga-horizon').addEventListener('change',forecast);el('ga-change').addEventListener('input',forecast);el('ga-horizon').dataset.bound='1'}forecast();barChart(data.consumption_daily_last7,'ga-daily-chart','daily');barChart(data.sales_2026,'ga-sales-chart','sales');el('ga-stamp').textContent='Base da distribuição: '+distribution.date.split('-').reverse().join('/');window.DashBoiInternalBaseDate=(data.excel_sync_status?.time||data.updated_at||distribution.date)+' (distribuição '+distribution.date+')';return true;
+}catch(err){el('ga-alert').textContent='Falha na leitura de dados internos: '+err.message;el('ga-alert').style.display='block';return false;}}
+window.DashBoiRefreshOperations=start;if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
 (()=>{'use strict';
 const get=id=>document.getElementById(id),pt=(n,d=0)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 async function audit(){if(!get('ga-stock-rows'))return;try{
- const r=await fetch('/intelligence-data.json',{cache:'no-store'});if(!r.ok)throw Error('Dados indisponiveis');
+ const r=await fetch('/intelligence-data.json?refresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('Dados indisponiveis');
  const d=await r.json(),st=d.stock_reconciliation,sl=d.slaughter_projections;
  const corn=st.items.find(i=>i[0]==='MILHO GRAO'),ddg=st.items.find(i=>i[0]==='DDG 30%');
  get('ga-stock-corn').textContent=pt(corn[4]/1000,1)+' t';
@@ -22,8 +22,8 @@ async function audit(){if(!get('ga-stock-rows'))return;try{
  get('ga-recent-animals').textContent=pt(sl.recent_weight_upto120d);
  const max=Math.max(...sl.horizons.map(x=>x.engorda));
  get('ga-slaughter-chart').innerHTML=sl.horizons.map(x=>'<div class="ga-sale"><span>'+x.days+'d</span><div><b style="width:'+Math.round(100*x.engorda/max)+'%"></b></div><strong>'+pt(x.engorda)+'</strong></div>').join('');
- get('ga-stock-rows').innerHTML=st.items.map(i=>'<tr><td>'+i[0]+'</td><td>'+pt(i[1]+i[2])+'</td><td>'+pt(i[3])+'</td><td class="'+(i[4]<0?'ga-neg':'')+'">'+pt(i[4])+'</td></tr>').join('');
- }catch(e){get('ga-stock-rows').innerHTML='<tr><td colspan="4">Falha ao carregar dados: '+e.message+'</td></tr>';}
+ get('ga-stock-rows').innerHTML=st.items.map(i=>'<tr><td>'+i[0]+'</td><td>'+pt(i[1]+i[2])+'</td><td>'+pt(i[3])+'</td><td class="'+(i[4]<0?'ga-neg':'')+'">'+pt(i[4])+'</td></tr>').join('');return true;
+ }catch(e){get('ga-stock-rows').innerHTML='<tr><td colspan="4">Falha ao carregar dados: '+e.message+'</td></tr>';return false;}
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',audit);else audit();
+window.DashBoiRefreshAudit=audit;if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',audit);else audit();
 })();
