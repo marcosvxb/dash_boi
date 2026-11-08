@@ -1,4 +1,4 @@
-const CACHE = "dashboi-v9-20261106-bgi";
+const CACHE = "dashboi-v10-20261108-excel-refresh";
 const APP_SHELL = ["/", "/index.html", "/styles.css", "/app.js", "/intelligence.js", "/intelligence.css", "/intelligence-data.json", "/manifest.json", "/icon.svg"];
 self.addEventListener("install", event => {
   self.skipWaiting();
