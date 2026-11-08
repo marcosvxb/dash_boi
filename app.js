@@ -226,6 +226,7 @@ async function loadBgi() {
       document.querySelector("#previous-input").value = "";
       calculateBgi();
     }
+    return false;
   }
 }
 
