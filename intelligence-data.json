@@ -1,6 +1,6 @@
 {
   "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
-  "updated_at": "2026-11-09T12:36:48-04:00",
+  "updated_at": "2026-11-09T13:36:50-04:00",
   "distribution": {
     "date": "2026-11-08",
     "heads": 11043,
@@ -519,7 +519,7 @@
   },
   "excel_sync_status": {
     "mode": "local_windows",
-    "time": "2026-11-09T12:36:48-04:00",
+    "time": "2026-11-09T13:36:50-04:00",
     "source_file_modified": "2026-11-09T08:38:49-04:00",
     "source_file_size": 303004628,
     "updated_modules": [
