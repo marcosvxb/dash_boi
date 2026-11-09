@@ -1,57 +1,71 @@
 {
-  "source": "FABRICA21-04-24 (snapshot)",
-  "updated_at": "2026-11-06",
+  "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
+  "updated_at": "2026-11-09T05:44:23-04:00",
   "distribution": {
     "date": "2026-11-03",
     "heads": 10944,
     "pasture": 6759,
     "recria": 2752,
     "engorda": 1433,
-    "status": "aggregate_unreconciled"
+    "other": 0,
+    "status": "aggregate_unreconciled",
+    "rows_latest_date": 332
   },
   "consumption_30d": {
     "from": "2026-10-05",
     "to": "2026-11-03",
-    "corn_kg": 393616.391,
+    "corn_kg": 359823.038,
     "ddg_kg": 390726.232,
+    "moist_corn_kg": 15294.492,
     "covered_days": 30,
-    "formula_coverage_pct": 100
+    "formula_coverage_pct": null,
+    "matched_records": 39097,
+    "unmatched_diets_count": 0,
+    "corn_definition": "Milho grão seco (Formulação B). Milho grão úmido (AP) em campo separado.",
+    "warning": ""
   },
   "consumption_daily_last7": [
     {
       "date": "2026-10-28",
-      "corn_kg": 12500.96,
-      "ddg_kg": 12410.93
+      "corn_kg": 11427.42,
+      "ddg_kg": 12410.93,
+      "moist_corn_kg": 484.65
     },
     {
       "date": "2026-10-29",
-      "corn_kg": 12315.48,
-      "ddg_kg": 12232.37
+      "corn_kg": 11256.96,
+      "ddg_kg": 12232.37,
+      "moist_corn_kg": 473.99
     },
     {
       "date": "2026-10-30",
-      "corn_kg": 12668.19,
-      "ddg_kg": 12495.31
+      "corn_kg": 11593.59,
+      "ddg_kg": 12495.31,
+      "moist_corn_kg": 541.87
     },
     {
       "date": "2026-10-31",
-      "corn_kg": 12757.11,
-      "ddg_kg": 12586.13
+      "corn_kg": 11674.46,
+      "ddg_kg": 12586.13,
+      "moist_corn_kg": 543.73
     },
     {
       "date": "2026-11-01",
-      "corn_kg": 12533.17,
-      "ddg_kg": 12496.39
+      "corn_kg": 11448.15,
+      "ddg_kg": 12496.39,
+      "moist_corn_kg": 452.67
     },
     {
       "date": "2026-11-02",
-      "corn_kg": 12401.39,
-      "ddg_kg": 12371.63
+      "corn_kg": 11326.7,
+      "ddg_kg": 12371.63,
+      "moist_corn_kg": 443.78
     },
     {
       "date": "2026-11-03",
-      "corn_kg": 12669.56,
-      "ddg_kg": 12654.61
+      "corn_kg": 11569.12,
+      "ddg_kg": 12654.61,
+      "moist_corn_kg": 443.78
     }
   ],
   "sales_2026": [
@@ -109,164 +123,350 @@
     "Projeções de consumo mantêm dieta e lotação constantes"
   ],
   "stock_reconciliation": {
-    "as_of": "2026-11-04",
-    "opening_date": "2023-06-30",
-    "status": "SALDO_TEÓRICO_NAO_CONFERIDO",
-    "method": "Saldo inicial nas linhas Estoque anterior de Desembolsos + entradas posteriores em Desembolsos (Destino=INSUMOS NUTRICIONAIS, produto F, quantidade G) - saidas acumuladas da aba Insumos nutricionais (coluna C). Nao utiliza a aba Estoque.",
+    "as_of": "2026-11-05",
+    "status": "SALDO_CONTABIL_NAO_FISICO",
+    "method": "Desembolsos: produto F, quantidade G, destino M=INSUMOS NUTRICIONAIS, estoque anterior E + compras; menos saídas C de Insumos nutricionais.",
+    "item_schema": [
+      "produto",
+      "saldo_inicial_kg",
+      "entradas_desembolsos_kg",
+      "saidas_kg",
+      "saldo_teorico_kg",
+      "entradas_aba_insumos_kg",
+      "diferenca_entradas_kg"
+    ],
     "items": [
       [
-        "MILHO GRAO",
-        600000,
-        22551894.8,
-        21856191.62,
-        1295703.18
-      ],
-      [
-        "DDG 30%",
-        46740,
-        10520997,
-        10729384.47,
-        -161647.47
-      ],
-      [
-        "CASCA DE SOJA",
-        0,
-        1202150,
-        1032280.33,
-        169869.67
-      ],
-      [
-        "FARELO DE SOJA",
-        24350,
-        1126440,
-        1067444.66,
-        83345.34
+        "A-BIND",
+        0.0,
+        65000.0,
+        62893.05,
+        2106.95,
+        65000.0,
+        0.0
       ],
       [
         "CARBONATO DE CALCIO",
-        0,
-        648780,
+        0.0,
+        648780.0,
         760409.73,
-        -111629.73
+        -111629.73,
+        648780.0,
+        0.0
       ],
       [
-        "TORTA DE ALGODAO",
-        0,
-        3765860,
-        3766548.17,
-        -688.17
+        "CASCA DE SOJA",
+        0.0,
+        762340.0,
+        1032280.33,
+        -269940.33,
+        1202150.0,
+        -439810.0
       ],
       [
-        "NUCLEO MINERAL 0,3%",
-        0,
-        264120,
-        419474.42,
-        -155354.42
-      ],
-      [
-        "SAL GRANULADO (TORRADO)",
-        0,
-        264200,
-        236395.72,
-        27804.28
-      ],
-      [
-        "FENO",
-        250000,
-        3351,
-        266094.1,
-        -12743.1
+        "DDG 30%",
+        46740.0,
+        10520997.0,
+        10729384.47,
+        -161647.47,
+        10567737.0,
+        0.0
       ],
       [
         "FARELO DE ALGODAO",
-        0,
-        460250,
+        0.0,
+        460250.0,
         430798.14,
-        29451.86
+        29451.86,
+        460250.0,
+        0.0
       ],
       [
-        "SILAGEM DE CAPIACU",
-        902352,
-        0,
-        2123922.92,
-        -1221570.92
+        "FARELO DE SOJA",
+        0.0,
+        1126440.0,
+        1067444.66,
+        58995.34,
+        1126440.0,
+        0.0
       ],
       [
-        "SILAGEM DE MILHETO",
-        7297686,
-        0,
-        8311578.07,
-        -1013892.07
-      ],
-      [
-        "SILAGEM DE MILHO",
-        1512010,
-        0,
-        1995761.77,
-        -483751.77
-      ],
-      [
-        "SOJA GRAO",
-        540000,
-        0,
-        455743.68,
-        84256.32
-      ],
-      [
-        "UREIA ( RACAO )",
-        37000,
-        245500,
-        374830.16,
-        -92330.16
+        "FENO",
+        250000.0,
+        4441.0,
+        266094.1,
+        -11653.1,
+        254441.0,
+        0.0
       ],
       [
         "LOTHAR PO SACO KG",
-        0,
-        102000,
+        0.0,
+        102000.0,
         187366.41,
-        -85366.41
+        -85366.41,
+        102000.0,
+        0.0
       ],
       [
-        "NUCLEO MINERAL 0,1%",
-        0,
-        87510,
-        171540,
-        -84030
+        "MILHO GRAO",
+        600000.0,
+        22551894.8,
+        21856191.62,
+        1295703.18,
+        22551894.8,
+        600000.0
       ],
       [
         "NUCLEO CONFINAMENTO",
-        0,
-        72030,
+        0.0,
+        72030.0,
         69967.67,
-        2062.33
+        2062.33,
+        72030.0,
+        0.0
       ],
       [
-        "A-BIND",
-        0,
-        65000,
-        62893.05,
-        2106.95
+        "NUCLEO MINERAL 0,1%",
+        0.0,
+        87510.0,
+        171540.0,
+        -84030.0,
+        87510.0,
+        0.0
+      ],
+      [
+        "NUCLEO MINERAL 0,3%",
+        0.0,
+        264120.0,
+        419474.42,
+        -155354.42,
+        264120.0,
+        0.0
       ],
       [
         "SAFWALL CH",
-        0,
-        19125,
+        0.0,
+        19125.0,
         18502.76,
-        622.24
+        622.24,
+        19125.0,
+        0.0
+      ],
+      [
+        "SAL GRANULADO (TORRADO)",
+        0.0,
+        264200.0,
+        236395.72,
+        27804.28,
+        296600.0,
+        -32400.0
+      ],
+      [
+        "SILAGEM DE CAPIACU",
+        902352.0,
+        0.0,
+        2123922.92,
+        -1221570.92,
+        902352.0,
+        0.0
+      ],
+      [
+        "SILAGEM DE MILHETO",
+        7297686.0,
+        0.0,
+        8311578.07,
+        -1013892.07,
+        7297686.0,
+        0.0
+      ],
+      [
+        "SILAGEM DE MILHO",
+        1512010.0,
+        0.0,
+        1995761.77,
+        -483751.77,
+        1512010.0,
+        0.0
+      ],
+      [
+        "SOJA GRAO",
+        540000.0,
+        0.0,
+        455743.68,
+        84256.32,
+        540000.0,
+        0.0
+      ],
+      [
+        "UREIA ( RACAO )",
+        0.0,
+        245500.0,
+        374830.16,
+        -129330.16,
+        245500.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # C- FINAL",
+        0.0,
+        0.0,
+        9455.75,
+        -9455.75,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # C- FINAL-2",
+        0.0,
+        0.0,
+        54898.52,
+        -54898.52,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # C- FINAL-3",
+        0.0,
+        0.0,
+        67599.91,
+        -67599.91,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # C- FINAL-4",
+        0.0,
+        0.0,
+        214120.15,
+        -214120.15,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # RECRIA",
+        0.0,
+        0.0,
+        23478.61,
+        -23478.61,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # RECRIA NOVA",
+        0.0,
+        0.0,
+        235580.46,
+        -235580.46,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS - MINERAIS # RECRIA SEM N",
+        0.0,
+        0.0,
+        5466.12,
+        -5466.12,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS MINERAIS # C-01",
+        0.0,
+        0.0,
+        27521.69,
+        -27521.69,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA ADTIVOS MINERAIS # C-01-2",
+        0.0,
+        0.0,
+        1951.62,
+        -1951.62,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA MINERAL RECRIA RECEPCAO",
+        0.0,
+        0.0,
+        27724.72,
+        -27724.72,
+        0.0,
+        0.0
+      ],
+      [
+        "SORGO RE-HIDRATADO",
+        0.0,
+        0.0,
+        256852.24,
+        -256852.24,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA MINERAL CONF FINAL - #06",
+        0.0,
+        0.0,
+        74611.2,
+        -74611.2,
+        0.0,
+        0.0
+      ],
+      [
+        "MISTURA MINERAL RECRIA - #04",
+        0.0,
+        0.0,
+        17849.23,
+        -17849.23,
+        0.0,
+        0.0
+      ],
+      [
+        "TORTA DE ALGODAO",
+        0.0,
+        3765860.0,
+        3766548.17,
+        -688.17,
+        3765860.0,
+        0.0
       ]
     ],
-    "corn_source_discrepancy_kg": 600000,
-    "observations": [
-      "Milho inclui saldo inicial 600.000kg no inventario anterior, ausente na soma da aba Insumos nutricionais.",
-      "DDG apresenta saldo teorico negativo: precisam ser conferidas entradas/ajustes nao contabilizados.",
-      "Silagens podem ter producao interna nao registrada em Desembolsos.",
-      "Estoque fisico exige contagem ou medicao em campo; estes saldos nao sao garantidos."
-    ]
+    "negative_items": [
+      "CARBONATO DE CALCIO",
+      "CASCA DE SOJA",
+      "DDG 30%",
+      "FENO",
+      "LOTHAR PO SACO KG",
+      "NUCLEO MINERAL 0,1%",
+      "NUCLEO MINERAL 0,3%",
+      "SILAGEM DE CAPIACU",
+      "SILAGEM DE MILHETO",
+      "SILAGEM DE MILHO",
+      "UREIA ( RACAO )",
+      "MISTURA ADTIVOS - MINERAIS # C- FINAL",
+      "MISTURA ADTIVOS - MINERAIS # C- FINAL-2",
+      "MISTURA ADTIVOS - MINERAIS # C- FINAL-3",
+      "MISTURA ADTIVOS - MINERAIS # C- FINAL-4",
+      "MISTURA ADTIVOS - MINERAIS # RECRIA",
+      "MISTURA ADTIVOS - MINERAIS # RECRIA NOVA",
+      "MISTURA ADTIVOS - MINERAIS # RECRIA SEM N",
+      "MISTURA ADTIVOS MINERAIS # C-01",
+      "MISTURA ADTIVOS MINERAIS # C-01-2",
+      "MISTURA MINERAL RECRIA RECEPCAO",
+      "SORGO RE-HIDRATADO",
+      "MISTURA MINERAL CONF FINAL - #06",
+      "MISTURA MINERAL RECRIA - #04",
+      "TORTA DE ALGODAO"
+    ],
+    "warning": "Estoque teórico, não inventário físico. Negativos exigem conciliação de entradas, fabricação própria e ajustes."
   },
   "slaughter_projections": {
     "as_of": "2026-11-03",
     "source": "MOVIMENTACOES, VENDAS e ultima pesagem positiva; corte por data de Distribuicao",
-    "confidence": "PROVISORIA_NAO_CONCILIADA",
+    "confidence": "HISTORICO_NAO_RECALCULADO_PELO_SINCRONIZADOR",
     "valid_movements": 194762,
     "unique_identifiers": 35045,
     "unique_sold_vendas": 22523,
@@ -314,6 +514,24 @@
       "Previsao de engorda supera rebanho de engorda registrado na Distribuicao; exige reconciliacao por animal.",
       "GMD futuro usa referencia operacional e peso projetado a partir da ultima pesagem, nao ganho observado garantido.",
       "Nenhum identificador individual e publicado neste JSON."
-    ]
+    ],
+    "warning": "A projeção individual de abates não é atualizada por esta rotina. É necessário processar movimentações e vendas individualmente."
+  },
+  "excel_sync_status": {
+    "mode": "local_windows",
+    "time": "2026-11-09T05:44:23-04:00",
+    "source_file_modified": "2026-11-07T05:17:06-04:00",
+    "source_file_size": 301840060,
+    "updated_modules": [
+      "distribution",
+      "consumption_30d",
+      "consumption_daily_last7",
+      "stock_reconciliation"
+    ],
+    "not_updated": [
+      "slaughter_projections",
+      "sales_2026"
+    ],
+    "note": "Atualiza indicadores agregados; não publica dados individuais."
   }
 }
