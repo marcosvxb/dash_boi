@@ -1,54 +1,30 @@
 {
   "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
-  "updated_at": "2026-11-13T05:36:47-04:00",
+  "updated_at": "2026-11-14T05:36:47-04:00",
   "distribution": {
-    "date": "2026-11-08",
-    "heads": 11043,
-    "pasture": 6337,
-    "recria": 2966,
-    "engorda": 1740,
+    "date": "2026-11-12",
+    "heads": 10805,
+    "pasture": 6009,
+    "recria": 3206,
+    "engorda": 1590,
     "other": 0,
     "status": "aggregate_unreconciled",
-    "rows_latest_date": 326
+    "rows_latest_date": 325
   },
   "consumption_30d": {
-    "from": "2026-10-10",
-    "to": "2026-11-08",
-    "corn_kg": 353347.307,
-    "ddg_kg": 383953.659,
-    "moist_corn_kg": 14883.85,
+    "from": "2026-10-14",
+    "to": "2026-11-12",
+    "corn_kg": 349823.148,
+    "ddg_kg": 379950.35,
+    "moist_corn_kg": 14826.19,
     "covered_days": 30,
     "formula_coverage_pct": null,
-    "matched_records": 39278,
+    "matched_records": 39421,
     "unmatched_diets_count": 0,
     "corn_definition": "Milho grão seco (Formulação B). Milho grão úmido (AP) em campo separado.",
     "warning": ""
   },
   "consumption_daily_last7": [
-    {
-      "date": "2026-11-02",
-      "corn_kg": 11326.7,
-      "ddg_kg": 12371.63,
-      "moist_corn_kg": 443.78
-    },
-    {
-      "date": "2026-11-03",
-      "corn_kg": 11569.12,
-      "ddg_kg": 12654.61,
-      "moist_corn_kg": 443.78
-    },
-    {
-      "date": "2026-11-04",
-      "corn_kg": 11977.43,
-      "ddg_kg": 13124.42,
-      "moist_corn_kg": 447.33
-    },
-    {
-      "date": "2026-11-05",
-      "corn_kg": 11619.8,
-      "ddg_kg": 12688.24,
-      "moist_corn_kg": 457.11
-    },
     {
       "date": "2026-11-06",
       "corn_kg": 11810.02,
@@ -66,6 +42,30 @@
       "corn_kg": 11937.78,
       "ddg_kg": 13044.96,
       "moist_corn_kg": 464.66
+    },
+    {
+      "date": "2026-11-09",
+      "corn_kg": 12114.75,
+      "ddg_kg": 13260.04,
+      "moist_corn_kg": 460.22
+    },
+    {
+      "date": "2026-11-10",
+      "corn_kg": 11590.12,
+      "ddg_kg": 12637.43,
+      "moist_corn_kg": 465.55
+    },
+    {
+      "date": "2026-11-11",
+      "corn_kg": 12198.74,
+      "ddg_kg": 13325.76,
+      "moist_corn_kg": 477.1
+    },
+    {
+      "date": "2026-11-12",
+      "corn_kg": 12618.41,
+      "ddg_kg": 13794.36,
+      "moist_corn_kg": 488.2
     }
   ],
   "sales_2026": [
@@ -123,7 +123,7 @@
     "Projeções de consumo mantêm dieta e lotação constantes"
   ],
   "stock_reconciliation": {
-    "as_of": "2026-11-05",
+    "as_of": "2026-11-12",
     "status": "SALDO_CONTABIL_NAO_FISICO",
     "method": "Desembolsos: produto F, quantidade G, destino M=INSUMOS NUTRICIONAIS, estoque anterior E + compras; menos saídas C de Insumos nutricionais.",
     "item_schema": [
@@ -166,10 +166,10 @@
       [
         "DDG 30%",
         46740.0,
-        10520997.0,
-        10796839.53,
-        -229102.53,
-        10567737.0,
+        10709217.0,
+        10849857.12,
+        -93900.12,
+        10755957.0,
         0.0
       ],
       [
@@ -211,10 +211,10 @@
       [
         "MILHO GRAO",
         600000.0,
-        22551894.8,
-        21933109.94,
-        1218784.86,
-        22551894.8,
+        22851894.8,
+        21981631.96,
+        1470262.84,
+        22851894.8,
         600000.0
       ],
       [
@@ -427,10 +427,10 @@
       [
         "TORTA DE ALGODAO",
         0.0,
-        3765860.0,
-        3789138.6,
-        -23278.6,
-        3765860.0,
+        3816730.0,
+        3807667.4,
+        9062.6,
+        3816730.0,
         0.0
       ]
     ],
@@ -458,8 +458,7 @@
       "MISTURA MINERAL RECRIA RECEPCAO",
       "SORGO RE-HIDRATADO",
       "MISTURA MINERAL CONF FINAL - #06",
-      "MISTURA MINERAL RECRIA - #04",
-      "TORTA DE ALGODAO"
+      "MISTURA MINERAL RECRIA - #04"
     ],
     "warning": "Estoque teórico, não inventário físico. Negativos exigem conciliação de entradas, fabricação própria e ajustes."
   },
@@ -519,9 +518,9 @@
   },
   "excel_sync_status": {
     "mode": "local_windows",
-    "time": "2026-11-13T05:36:47-04:00",
-    "source_file_modified": "2026-11-12T05:18:29-04:00",
-    "source_file_size": 302966170,
+    "time": "2026-11-14T05:36:47-04:00",
+    "source_file_modified": "2026-11-14T04:20:38-04:00",
+    "source_file_size": 304018830,
     "updated_modules": [
       "distribution",
       "consumption_30d",
