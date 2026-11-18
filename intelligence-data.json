@@ -1,54 +1,30 @@
 {
   "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
-  "updated_at": "2026-11-17T05:36:49-04:00",
+  "updated_at": "2026-11-18T05:36:49-04:00",
   "distribution": {
-    "date": "2026-11-12",
+    "date": "2026-11-16",
     "heads": 10805,
     "pasture": 6009,
-    "recria": 3206,
-    "engorda": 1590,
+    "recria": 3128,
+    "engorda": 1668,
     "other": 0,
     "status": "aggregate_unreconciled",
     "rows_latest_date": 325
   },
   "consumption_30d": {
-    "from": "2026-10-14",
-    "to": "2026-11-12",
-    "corn_kg": 349823.148,
-    "ddg_kg": 379950.35,
-    "moist_corn_kg": 14826.19,
+    "from": "2026-10-18",
+    "to": "2026-11-16",
+    "corn_kg": 351763.949,
+    "ddg_kg": 382248.181,
+    "moist_corn_kg": 14809.309,
     "covered_days": 30,
     "formula_coverage_pct": null,
-    "matched_records": 39421,
+    "matched_records": 39565,
     "unmatched_diets_count": 0,
     "corn_definition": "Milho grão seco (Formulação B). Milho grão úmido (AP) em campo separado.",
     "warning": ""
   },
   "consumption_daily_last7": [
-    {
-      "date": "2026-11-06",
-      "corn_kg": 11810.02,
-      "ddg_kg": 12895.82,
-      "moist_corn_kg": 464.66
-    },
-    {
-      "date": "2026-11-07",
-      "corn_kg": 11804.29,
-      "ddg_kg": 12863.61,
-      "moist_corn_kg": 477.99
-    },
-    {
-      "date": "2026-11-08",
-      "corn_kg": 11937.78,
-      "ddg_kg": 13044.96,
-      "moist_corn_kg": 464.66
-    },
-    {
-      "date": "2026-11-09",
-      "corn_kg": 12114.75,
-      "ddg_kg": 13260.04,
-      "moist_corn_kg": 460.22
-    },
     {
       "date": "2026-11-10",
       "corn_kg": 11590.12,
@@ -66,6 +42,30 @@
       "corn_kg": 12618.41,
       "ddg_kg": 13794.36,
       "moist_corn_kg": 488.2
+    },
+    {
+      "date": "2026-11-13",
+      "corn_kg": 12848.24,
+      "ddg_kg": 14063.49,
+      "moist_corn_kg": 487.76
+    },
+    {
+      "date": "2026-11-14",
+      "corn_kg": 12719.65,
+      "ddg_kg": 13913.39,
+      "moist_corn_kg": 487.76
+    },
+    {
+      "date": "2026-11-15",
+      "corn_kg": 12727.32,
+      "ddg_kg": 13929.14,
+      "moist_corn_kg": 484.21
+    },
+    {
+      "date": "2026-11-16",
+      "corn_kg": 12800.37,
+      "ddg_kg": 14016.13,
+      "moist_corn_kg": 483.32
     }
   ],
   "sales_2026": [
@@ -167,8 +167,8 @@
         "DDG 30%",
         46740.0,
         10709217.0,
-        10849857.12,
-        -93900.12,
+        10905779.27,
+        -149822.27,
         10755957.0,
         0.0
       ],
@@ -212,8 +212,8 @@
         "MILHO GRAO",
         600000.0,
         22851894.8,
-        21981631.96,
-        1470262.84,
+        22032727.53,
+        1419167.27,
         22851894.8,
         600000.0
       ],
@@ -428,8 +428,8 @@
         "TORTA DE ALGODAO",
         0.0,
         3816730.0,
-        3807667.4,
-        9062.6,
+        3827153.36,
+        -10423.36,
         3816730.0,
         0.0
       ]
@@ -458,7 +458,8 @@
       "MISTURA MINERAL RECRIA RECEPCAO",
       "SORGO RE-HIDRATADO",
       "MISTURA MINERAL CONF FINAL - #06",
-      "MISTURA MINERAL RECRIA - #04"
+      "MISTURA MINERAL RECRIA - #04",
+      "TORTA DE ALGODAO"
     ],
     "warning": "Estoque teórico, não inventário físico. Negativos exigem conciliação de entradas, fabricação própria e ajustes."
   },
@@ -518,9 +519,9 @@
   },
   "excel_sync_status": {
     "mode": "local_windows",
-    "time": "2026-11-17T05:36:49-04:00",
-    "source_file_modified": "2026-11-14T04:20:38-04:00",
-    "source_file_size": 304018830,
+    "time": "2026-11-18T05:36:49-04:00",
+    "source_file_modified": "2026-11-18T05:32:46-04:00",
+    "source_file_size": 304915882,
     "updated_modules": [
       "distribution",
       "consumption_30d",
