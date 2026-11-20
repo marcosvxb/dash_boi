@@ -1,6 +1,6 @@
 {
   "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
-  "updated_at": "2026-11-18T05:36:49-04:00",
+  "updated_at": "2026-11-20T05:36:49-04:00",
   "distribution": {
     "date": "2026-11-16",
     "heads": 10805,
@@ -123,7 +123,7 @@
     "Projeções de consumo mantêm dieta e lotação constantes"
   ],
   "stock_reconciliation": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-18",
     "status": "SALDO_CONTABIL_NAO_FISICO",
     "method": "Desembolsos: produto F, quantidade G, destino M=INSUMOS NUTRICIONAIS, estoque anterior E + compras; menos saídas C de Insumos nutricionais.",
     "item_schema": [
@@ -166,10 +166,10 @@
       [
         "DDG 30%",
         46740.0,
-        10709217.0,
+        10755167.0,
         10905779.27,
-        -149822.27,
-        10755957.0,
+        -103872.27,
+        10801907.0,
         0.0
       ],
       [
@@ -427,10 +427,10 @@
       [
         "TORTA DE ALGODAO",
         0.0,
-        3816730.0,
+        3866690.0,
         3827153.36,
-        -10423.36,
-        3816730.0,
+        39536.64,
+        3866690.0,
         0.0
       ]
     ],
@@ -458,8 +458,7 @@
       "MISTURA MINERAL RECRIA RECEPCAO",
       "SORGO RE-HIDRATADO",
       "MISTURA MINERAL CONF FINAL - #06",
-      "MISTURA MINERAL RECRIA - #04",
-      "TORTA DE ALGODAO"
+      "MISTURA MINERAL RECRIA - #04"
     ],
     "warning": "Estoque teórico, não inventário físico. Negativos exigem conciliação de entradas, fabricação própria e ajustes."
   },
@@ -519,9 +518,9 @@
   },
   "excel_sync_status": {
     "mode": "local_windows",
-    "time": "2026-11-18T05:36:49-04:00",
-    "source_file_modified": "2026-11-18T05:32:46-04:00",
-    "source_file_size": 304915882,
+    "time": "2026-11-20T05:36:49-04:00",
+    "source_file_modified": "2026-11-20T05:25:02-04:00",
+    "source_file_size": 304903915,
     "updated_modules": [
       "distribution",
       "consumption_30d",
