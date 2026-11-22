@@ -1,48 +1,30 @@
 {
   "source": "FABRICA21-04-24.xlsx (sincronização Excel no Windows)",
-  "updated_at": "2026-11-20T05:36:49-04:00",
+  "updated_at": "2026-11-22T05:36:46-04:00",
   "distribution": {
-    "date": "2026-11-16",
-    "heads": 10805,
-    "pasture": 6009,
-    "recria": 3128,
-    "engorda": 1668,
+    "date": "2026-11-20",
+    "heads": 11191,
+    "pasture": 6209,
+    "recria": 3261,
+    "engorda": 1721,
     "other": 0,
     "status": "aggregate_unreconciled",
-    "rows_latest_date": 325
+    "rows_latest_date": 321
   },
   "consumption_30d": {
-    "from": "2026-10-18",
-    "to": "2026-11-16",
-    "corn_kg": 351763.949,
-    "ddg_kg": 382248.181,
-    "moist_corn_kg": 14809.309,
+    "from": "2026-10-21",
+    "to": "2026-11-19",
+    "corn_kg": 352925.089,
+    "ddg_kg": 384472.495,
+    "moist_corn_kg": 14355.666,
     "covered_days": 30,
     "formula_coverage_pct": null,
-    "matched_records": 39565,
+    "matched_records": 39671,
     "unmatched_diets_count": 0,
     "corn_definition": "Milho grão seco (Formulação B). Milho grão úmido (AP) em campo separado.",
     "warning": ""
   },
   "consumption_daily_last7": [
-    {
-      "date": "2026-11-10",
-      "corn_kg": 11590.12,
-      "ddg_kg": 12637.43,
-      "moist_corn_kg": 465.55
-    },
-    {
-      "date": "2026-11-11",
-      "corn_kg": 12198.74,
-      "ddg_kg": 13325.76,
-      "moist_corn_kg": 477.1
-    },
-    {
-      "date": "2026-11-12",
-      "corn_kg": 12618.41,
-      "ddg_kg": 13794.36,
-      "moist_corn_kg": 488.2
-    },
     {
       "date": "2026-11-13",
       "corn_kg": 12848.24,
@@ -66,6 +48,24 @@
       "corn_kg": 12800.37,
       "ddg_kg": 14016.13,
       "moist_corn_kg": 483.32
+    },
+    {
+      "date": "2026-11-17",
+      "corn_kg": 12891.08,
+      "ddg_kg": 14159.45,
+      "moist_corn_kg": 463.77
+    },
+    {
+      "date": "2026-11-18",
+      "corn_kg": 12264.05,
+      "ddg_kg": 13786.76,
+      "moist_corn_kg": 276.22
+    },
+    {
+      "date": "2026-11-19",
+      "corn_kg": 12922.64,
+      "ddg_kg": 14545.15,
+      "moist_corn_kg": 281.64
     }
   ],
   "sales_2026": [
@@ -167,8 +167,8 @@
         "DDG 30%",
         46740.0,
         10755167.0,
-        10905779.27,
-        -103872.27,
+        10948270.62,
+        -146363.62,
         10801907.0,
         0.0
       ],
@@ -212,8 +212,8 @@
         "MILHO GRAO",
         600000.0,
         22851894.8,
-        22032727.53,
-        1419167.27,
+        22070805.31,
+        1381089.49,
         22851894.8,
         600000.0
       ],
@@ -428,8 +428,8 @@
         "TORTA DE ALGODAO",
         0.0,
         3866690.0,
-        3827153.36,
-        39536.64,
+        3841448.92,
+        25241.08,
         3866690.0,
         0.0
       ]
@@ -518,9 +518,9 @@
   },
   "excel_sync_status": {
     "mode": "local_windows",
-    "time": "2026-11-20T05:36:49-04:00",
-    "source_file_modified": "2026-11-20T05:25:02-04:00",
-    "source_file_size": 304903915,
+    "time": "2026-11-22T05:36:46-04:00",
+    "source_file_modified": "2026-11-22T05:35:04-04:00",
+    "source_file_size": 309996942,
     "updated_modules": [
       "distribution",
       "consumption_30d",
